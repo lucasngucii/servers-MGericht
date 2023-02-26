@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Category, CategorySchema } from "../categories/category.model";
+import { Tags } from "../tags/tag.model";
 export interface Product extends mongoose.Document {
   name: string;
   description: string;
@@ -7,7 +8,7 @@ export interface Product extends mongoose.Document {
   active: boolean;
   category: Category;
   image: string;
-  tags: string[];
+  tags: Tags[];
 }
 export const ProductSchema: mongoose.Schema<Product> = new mongoose.Schema(
   {
@@ -17,6 +18,7 @@ export const ProductSchema: mongoose.Schema<Product> = new mongoose.Schema(
     active: { type: Boolean, required: true },
     category: { type: CategorySchema, required: true },
     image: { type: String, required: true },
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tags" }],
   },
   {
     timestamps: true,
