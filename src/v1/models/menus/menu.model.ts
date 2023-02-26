@@ -16,8 +16,8 @@ export const MenuSchema: mongoose.Schema<Menu> = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     active: { type: Boolean, required: true },
-    products: { type: [ProductSchema], required: true },
-    category: { type: [CategorySchema], required: true },
+    products: { type: [ProductSchema], required: true, ref: "Product" },
+    category: { type: [CategorySchema], required: true, ref: "Category" },
     create_at: { type: Date, default: Date.now },
   },
   {
