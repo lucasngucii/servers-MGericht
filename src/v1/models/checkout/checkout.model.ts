@@ -10,6 +10,7 @@ export interface Checkout extends mongoose.Document {
     billing_address: string;
     payment_method: Payment['method'];
     payment_status: Payment['status'];
-    /* order_status: Order['status']; */
-    
+    order_status: Order['status'];
+    order_total: number;
+    create_at: Date;
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Order, OrderSchema } from '../orders/order.model';
+import { Order, OrderSchema } from "../orders/order.model";
 import { User } from "../users/user.model";
 export interface Payment extends mongoose.Document {
   user_id: User["_id"];
@@ -17,7 +17,7 @@ export const PaymentSchema: mongoose.Schema<Payment> = new mongoose.Schema({
   amount: { type: Number, required: true },
   currency: { type: String, required: true, enum: ["USD", "EUR", "VND"] },
   status: { type: String, required: true, enum: ["pending", "success", "failed"] },
-  /* method:{type: OrderSchema['method'], required: true}, */
+  method: { type: String, required: true },  // no logic fix late
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
 });

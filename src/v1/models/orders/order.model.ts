@@ -22,3 +22,4 @@ export const OrderSchema: mongoose.Schema<Order> = new mongoose.Schema(
         status: { type: [String], required: true, enum: ["pending", "success", "failed"] },
     }
 )
+export const OrderModel = mongoose.model<Order>("Order", OrderSchema);
