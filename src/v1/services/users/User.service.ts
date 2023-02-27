@@ -3,19 +3,22 @@ import { User, UserModel } from "../../models/users/user.model";
 import bcrypt from "bcrypt";
 export const register = async (user: DocumentDefinition<User>): Promise<any> => {
   try {
-    const FoundUser = await UserModel.findOne({ username: user.username });
-    if (FoundUser) {
-      throw new Error("User already exists");
+    const userFound = await UserModel.findOne({ username: user.username });
+    if (userFound) {
+      throw new Error("usename or email already exists");
     }
-    // hash password
+    // hashing passwords
     const hashedPassword = await bcrypt.hash(user.password, 8);
-    // new user
-    const newUser = new UserModel({
-      username: user.username.toLowerCase(),
+    const newUser = new UserModel( {
+      id: user.id,
+      username: user.username,
       email: user.email.toLowerCase(),
       password: hashedPassword,
+      role: user.role,
+      
     });
-    await newUser.save();
+    //create a new user object
+    const dbUser = await newUser.save();
   } catch (error) {
     throw error;
   }

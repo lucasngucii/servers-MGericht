@@ -12,7 +12,7 @@ export const login = async (req: Request, res: Response) => {
 export const register = async (req: Request, res: Response) => {
     try {
         
-        
+        console.log(req.body);
       const user = await UserService.register(req.body);
     if (!user) {
       res.status(HTTP_BAD_REQUEST).json({ error: "User not found" });
