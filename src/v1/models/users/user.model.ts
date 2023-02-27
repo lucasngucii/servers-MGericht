@@ -58,16 +58,16 @@ export interface User extends mongoose.Document {
   username: string;
   email: string;
   password: string;
-  profile: Profile_User;
-  role: Role_User;
+  profile: Profile_User["_id"];
+  role: Role_User["_id"];
 }
 export const UserSchema: mongoose.Schema<User> = new mongoose.Schema(
   {
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    profile: { type: Profile_UserSchema, required: true },
-    role: { type: Role_UserSchema, required: true },
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile_User", required: true, default: null },
+    role: { type: mongoose.Schema.Types.ObjectId, ref: "Role_User", required: true, default: null },
   },
   {
     timestamps: true,
@@ -80,4 +80,4 @@ export const UserSchema: mongoose.Schema<User> = new mongoose.Schema(
     collection: "User",
   }
 );
-export const UserModal = mongoose.model<User>("User", UserSchema);
+export const UserModel = mongoose.model<User>("User", UserSchema);
