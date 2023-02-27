@@ -11,7 +11,7 @@ const app = express();
 app.connect(require("./database/connectdb"));
 
 // import routes clients
-app.use(require("./routes/client/index.router"));
+app.use(require("./routes/index.router"));
 // import routes admin
 
 // use middleware
