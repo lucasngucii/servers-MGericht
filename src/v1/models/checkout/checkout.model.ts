@@ -21,6 +21,7 @@ export const CheckoutSchema: mongoose.Schema<Checkout> = new mongoose.Schema({
   billing_address: { type: String, required: true },
   payment_status: { type: mongoose.Schema.Types.String, ref: "Payment", required: true },
   payment_method: { type: mongoose.Schema.Types.String, ref: "Order", required: true },
+  order_status: { type: mongoose.Schema.Types.String, ref: "Order", required: true },
   order_total: { type: Number, required: true },
   create_at: { type: Date, default: Date.now },
 });

@@ -10,6 +10,10 @@ const app = express();
 // connect to the server
 app.connect(require("./database/connectdb"));
 
+// import routes clients
+app.use(require("./routes/client/index.router"));
+// import routes admin
+
 // use middleware
 app.use(helmet());
 app.use(morgan("combined"));

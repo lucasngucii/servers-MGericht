@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { User } from "../users/user.model";
 import { Product, ProductSchema } from "../products/product.model";
 import { Payment } from "../payments/payment.model";
+import { OrderStatus } from "../../constants/order-status/order_status";
 export interface Order extends mongoose.Document {
   user_id: User["_id"];
   product_list: Product[];
@@ -9,7 +10,7 @@ export interface Order extends mongoose.Document {
   payment_method: string;
   delivery_address: string;
   order_date: Date;
-  status: string[];
+  status: string;
 }
 export const OrderSchema: mongoose.Schema<Order> = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -18,6 +19,10 @@ export const OrderSchema: mongoose.Schema<Order> = new mongoose.Schema({
   payment_method: { type: String, required: true, enum: ["credit_card", "cash_on_delivery", "paypal"] },
   delivery_address: { type: String, required: true },
   order_date: { type: Date, default: Date.now },
-  status: { type: [String], required: true, enum: ["pending", "success", "failed"] },
+  status: {
+    type: String,
+    required: true,
+    enum: ["pending", "processing", "shipped", "delivered", "canceled"],
+  },
 });
 export const OrderModel = mongoose.model<Order>("Order", OrderSchema);
