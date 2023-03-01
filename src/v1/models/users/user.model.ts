@@ -59,7 +59,7 @@ export interface User extends mongoose.Document {
   email: string;
   password: string;
   role: boolean;
-  fist_name: string;
+  frist_name: string;
   last_name: string;
   image: string;
   phone: string;
@@ -98,7 +98,7 @@ export const UserSchema: mongoose.Schema<User> = new mongoose.Schema(
     },
     password: { type: String, required: true, minlength: 6, trim: true },
     role: { type: Boolean, required: true, default: false },
-    fist_name: { type: String, required: true, trim: true },
+    frist_name: { type: String, required: true, trim: true },
     last_name: { type: String, required: true, trim: true },
     image: { type: String, required: true },
     phone: {
