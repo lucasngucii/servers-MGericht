@@ -7,13 +7,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 import jwt from "jsonwebtoken";
 const app = express();
-// connect to the server
+
 app.connect(require("./database/connectdb"));
-
-// import routes clients
-app.use(require("./routes/index.router"));
-// import routes admin
-
 // use middleware
 app.use(helmet());
 app.use(morgan("combined"));
@@ -26,13 +21,15 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// routers
+app.use(require("./routes/index.router"));
+
 // Error Handling Middleware called
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error = new Error("Not found");
   next(error);
 });
-
 // error handler middleware
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   res.status(error.status || 500).send({
@@ -42,5 +39,4 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     },
   });
 });
-
 module.exports = app;

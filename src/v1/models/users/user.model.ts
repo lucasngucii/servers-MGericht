@@ -89,12 +89,6 @@ export const UserSchema: mongoose.Schema<User> = new mongoose.Schema(
       minlength: 6,
       lowercase: true,
       trim: true,
-      validate: {
-        validator: (value: string) => {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        },
-        message: "Email not valid",
-      },
     },
     password: { type: String, required: true, minlength: 6, trim: true },
     role: { type: Boolean, required: true, default: false },
