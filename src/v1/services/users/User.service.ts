@@ -1,5 +1,6 @@
 import { DocumentDefinition } from 'mongoose';
 import { user, userModel } from '../../models/users/user.model';
+import bcrypt from 'bcrypt';
 
 export const login = async (user: DocumentDefinition<user>) => {
   try {
@@ -18,7 +19,15 @@ export const login = async (user: DocumentDefinition<user>) => {
 }
 export const register = async (user: DocumentDefinition<user>) => {
   try {
-    return await userModel.create(user);
+    const foundUser = await userModel.findOne({ username: user.username });
+    if (foundUser) { 
+      throw new Error("User already exists"); 
+    }
+    // hash password
+    const hashedPassword = bcrypt.hashSync(user.password, 10);
+    // create new user
+    const newUser = await userModel.create({ ...user, password: hashedPassword });
+    await newUser.save();
   } catch (error) {
     throw error;
   }
