@@ -1,4 +1,4 @@
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition, ObjectId } from "mongoose";
 import { user, userModel } from "../../models/users/user.model";
 import bcrypt from "bcrypt";
 import { getTokenUser } from "../../utils/tokens/token";
@@ -16,8 +16,9 @@ export const login = async (user: DocumentDefinition<user>) => {
     if (!isMatch) {
       throw new Error("Incorrect password");
     }
-
-    return foundUser;
+    // get token
+    const token = getTokenUser(foundUser);
+    return { user: foundUser, token };
   } catch (error) {
     throw error;
   }
@@ -33,10 +34,28 @@ export const register = async (user: DocumentDefinition<user>) => {
     // create new user
     const newUser = await userModel.create({ ...user, password: hashedPassword });
     await newUser.save();
-    // get token
-    const token = getTokenUser(newUser);
-    return { user: newUser, token };
+    return newUser;
   } catch (error) {
     throw error;
   }
 };
+// get all users
+export const getUsers = async () => {
+  try {
+    const foundUser = await userModel.find()
+    !foundUser && new Error("User not found");
+    return foundUser;
+  } catch (error) {
+    throw error;
+  }
+}
+export const getUserById = async (id: string) => {
+  try {
+    const foundUser = await userModel.findById(id);
+    !foundUser && new Error("User not found");
+    return foundUser;
+
+  } catch (error) {
+    throw error;
+  }
+ }

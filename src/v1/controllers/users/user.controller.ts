@@ -18,3 +18,20 @@ export const register = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({error: getErrorMessage(error)})
   }
 }
+export const getUsers = async (req: Request, res: Response) => { 
+  try {
+    const user = await userServices.getUsers();
+    res.status(HTTP_SUCCESS).json(user);
+  } catch (error) {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) })
+  }
+}
+export const getUserById = async (req: Request, res: Response) => { 
+  try {
+    const { id } = req.params;
+    const user = await userServices.getUserById(id);
+    res.status(HTTP_SUCCESS).json(user);
+  } catch (error) {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) })
+  }
+}

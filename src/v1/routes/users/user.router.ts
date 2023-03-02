@@ -4,4 +4,6 @@ const router = Router();
 
 router.get("/login", userController.login)
 router.post("/registers", userController.register)
+router.get("/get-users", userController.getUsers)
+router.get("/:id", userController.getUserById)
 module.exports = router;
