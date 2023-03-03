@@ -5,6 +5,7 @@ const router = Router();
 router.get("/login", userController.login)
 router.post("/registers", userController.register)
 router.post("/logout", userController.logout)
+router.post("/:id/change-password", userController.changePassword)
 // Admin Router
 router.get("/get-users", userController.getUsers)
 router.get("/:id", userController.getUserById)

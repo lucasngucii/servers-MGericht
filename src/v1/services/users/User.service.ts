@@ -71,21 +71,32 @@ export const updateUser = async (id: string, user: DocumentDefinition<user>) => 
   try {
     const foundUser = await userModel.findByIdAndUpdate(id, { ...user });
     !foundUser && new Error("User not found");
-    console.log(foundUser)
+    console.log(foundUser);
     return foundUser;
   } catch (error) {
     throw error;
   }
 };
-export const changePassword = async (id: string, user: DocumentDefinition<user>) => { 
+export const changePassword = async (id: string, user: DocumentDefinition<user>, newPassword: string) => {
   try {
-    
+    // check if user exists
+    const foundUser = await userModel.findById(id);
+    !foundUser && new Error("User not found");
+
+    const updateUser = { ...user, foundUser };
+    // check password
+    const isMatch = await bcrypt.compareSync(updateUser.password, user.password);
+    if (!isMatch) {
+      throw new Error("Incorrect password");
+    }
+    const salt = await bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hashSync(user.password, salt);
+
+    return foundUser;
+    // hash password
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const logout = async (user: DocumentDefinition<user>) => { 
-
-}
-
+export const logout = async (user: DocumentDefinition<user>) => {};

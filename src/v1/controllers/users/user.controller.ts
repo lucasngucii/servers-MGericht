@@ -25,6 +25,7 @@ export const register = async (req: Request, res: Response) => {
 export const changePassword = async (req: Request, res: Response) => { 
   try {
     const { id } = req.params;
+    const {currentPassword, newPassword} = req.body;
     const user = await userServices.changePassword(id,req.body);
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
