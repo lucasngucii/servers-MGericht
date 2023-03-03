@@ -35,3 +35,13 @@ export const getUserById = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) })
   }
 }
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = await userServices.deleteUser(id);
+    res.status(HTTP_SUCCESS).json(user);
+    console.log(id);
+  } catch (error) {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) })
+  }
+}

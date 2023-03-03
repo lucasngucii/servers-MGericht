@@ -1,4 +1,4 @@
-import { DocumentDefinition, ObjectId } from "mongoose";
+import { DocumentDefinition, Types } from "mongoose";
 import { user, userModel } from "../../models/users/user.model";
 import bcrypt from "bcrypt";
 import { getTokenUser } from "../../utils/tokens/token";
@@ -55,6 +55,16 @@ export const getUserById = async (id: string) => {
     !foundUser && new Error("User not found");
     return foundUser;
 
+  } catch (error) {
+    throw error;
+  }
+ }
+export const deleteUser = async (id: string) => {
+  try {
+    
+    const foundUser = await userModel.findByIdAndDelete(id);
+    !foundUser && new Error("User not found");
+    return foundUser;
   } catch (error) {
     throw error;
   }
