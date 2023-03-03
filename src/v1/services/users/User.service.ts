@@ -42,30 +42,50 @@ export const register = async (user: DocumentDefinition<user>) => {
 // get all users
 export const getUsers = async () => {
   try {
-    const foundUser = await userModel.find()
+    const foundUser = await userModel.find();
     !foundUser && new Error("User not found");
     return foundUser;
   } catch (error) {
     throw error;
   }
-}
+};
 export const getUserById = async (id: string) => {
   try {
     const foundUser = await userModel.findById(id);
     !foundUser && new Error("User not found");
     return foundUser;
-
   } catch (error) {
     throw error;
   }
- }
+};
 export const deleteUser = async (id: string) => {
   try {
-    
-    const foundUser = await userModel.findByIdAndDelete(id);
+    const deleteUser = await userModel.findByIdAndDelete(id);
+    !deleteUser && new Error("User not found");
+    return deleteUser;
+  } catch (error) {
+    throw error;
+  }
+};
+export const updateUser = async (id: string, user: DocumentDefinition<user>) => {
+  try {
+    const foundUser = await userModel.findByIdAndUpdate(id, { ...user });
     !foundUser && new Error("User not found");
+    console.log(foundUser)
     return foundUser;
   } catch (error) {
     throw error;
   }
- }
+};
+export const changePassword = async (id: string, user: DocumentDefinition<user>) => { 
+  try {
+    
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const logout = async (user: DocumentDefinition<user>) => { 
+
+}
+
