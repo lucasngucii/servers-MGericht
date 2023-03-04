@@ -5,7 +5,6 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-import jwt from "jsonwebtoken";
 const app = express();
 
 app.connect(require("./database/connectdb"));
@@ -25,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("./routes/index.router"));
 
 // Error Handling Middleware called
-
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error = new Error("Not found");
   next(error);
