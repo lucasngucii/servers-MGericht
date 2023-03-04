@@ -90,7 +90,7 @@ export const changePassword = async (id: string, user: DocumentDefinition<user>,
       throw new Error("Incorrect password");
     }
     const salt = await bcrypt.genSaltSync(10);
-    const hashedPassword = await bcrypt.hashSync(user.password, salt);
+    const hashedPassword = await bcrypt.hashSync(newPassword, salt);
 
     return foundUser;
     // hash password
