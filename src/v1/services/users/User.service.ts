@@ -80,27 +80,6 @@ export const updateUser = async (id: string, user: DocumentDefinition<user>) => 
 export const changePassword = async (id: string, currentPassword: string, newPassword: string) => {
   try {
      
-    // check if user exists
-    const foundUser = await userModel.findById(id);
-    !foundUser && new Error("User not found");
-
-    const updateUser = { ...foundUser };
-    console.log("password current", currentPassword);
-    console.log("password new", newPassword);
-    console.log(updateUser);
-    // check password
-    /* const isMatch = await bcrypt.compareSync(updateUser.password, user.password);
-    if (!isMatch) {
-      throw new Error("Incorrect password");
-    } */
-   // const salt = await bcrypt.genSaltSync(10);
-    //const hashedPassword = await bcrypt.hashSync(newPassword, salt);
-    //updateUser.password = user.password;
-
-    console.log(updateUser);
-
-    return foundUser;
-    // hash password
   } catch (error) {
     throw error;
   }
