@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { HTTP_INTERNAL_SERVER_ERROR, HTTP_SUCCESS } from "../../constants/http-status/http_status";
 import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as productServices from "../../services/products/product.service";
@@ -33,6 +33,16 @@ export const updateProduct = async (req: Request, res: Response) => {
         const { id } = req.params;
         const product = await productServices.updateProduct(id, req.body);
         res.status(HTTP_SUCCESS).json({message: "Product updated successfully", product});
+    } catch (error) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+    }
+}
+export const searchKeyword = async (req: Request, res: Response, next: NextFunction) => { 
+    try {
+        const { keyword } = req.query;
+
+        
+        /* res.status(HTTP_SUCCESS).json(product); */
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
