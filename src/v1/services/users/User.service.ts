@@ -85,4 +85,11 @@ export const changePassword = async (id: string, currentPassword: string, newPas
   }
 };
 
-export const logout = async (user: DocumentDefinition<user>) => {};
+export const logout = async (user: DocumentDefinition<user>) => {
+  try {
+    
+  } catch (error) {
+    throw error;
+  }
+};
+ 
