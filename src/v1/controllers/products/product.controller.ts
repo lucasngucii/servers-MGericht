@@ -55,4 +55,4 @@ export const searchKeyword = async (req: Request, res: Response, next: NextFunct
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
-}
+}   
