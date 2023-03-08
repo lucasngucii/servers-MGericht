@@ -69,7 +69,17 @@ export const deleteUser = async (id: string) => {
 };
 export const updateUser = async (id: string, user: DocumentDefinition<user>) => {
   try {
-    const foundUser = await userModel.findByIdAndUpdate(id, { ...user });
+    const foundUser = await userModel.findByIdAndUpdate(
+      id,
+      {
+        password: user?.password,
+        first_name: user?.first_name,
+        last_name: user?.last_name,
+        phone: user?.phone,
+        address: user?.address,
+      },
+      { new: true }
+    );
     !foundUser && new Error("User not found");
     console.log(foundUser);
     return foundUser;
@@ -79,7 +89,6 @@ export const updateUser = async (id: string, user: DocumentDefinition<user>) => 
 };
 export const changePassword = async (id: string, currentPassword: string, newPassword: string) => {
   try {
-     
   } catch (error) {
     throw error;
   }
@@ -87,9 +96,7 @@ export const changePassword = async (id: string, currentPassword: string, newPas
 
 export const logout = async (user: DocumentDefinition<user>) => {
   try {
-    
   } catch (error) {
     throw error;
   }
 };
- 
