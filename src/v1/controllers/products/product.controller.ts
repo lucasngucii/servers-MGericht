@@ -50,9 +50,8 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const searchKeyword = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const { keyword } = req.query;
-
-        
-        /* res.status(HTTP_SUCCESS).json(product); */
+        !keyword && new Error("keyword not in params");
+        const product = await productServices.searchKeyword(keyword as string);
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
