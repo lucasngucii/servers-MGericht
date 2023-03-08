@@ -49,3 +49,12 @@ export const searchKeyword = async (keyword: string) => {
         throw error;
     }
 }
+export const deleteProduct = async (id: string) => { 
+    try {
+        const product = await productModel.findByIdAndDelete(id);
+        !product && new Error("Product not found");
+        return product;
+    } catch (error) {
+        throw error;
+    }
+}

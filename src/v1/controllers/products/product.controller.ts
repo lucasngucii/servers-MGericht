@@ -47,3 +47,13 @@ export const searchKeyword = async (req: Request, res: Response, next: NextFunct
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
 }
+export const deleteProduct = async (req: Request, res: Response) => { 
+    try {
+        const { id } = req.params;
+        !id && new Error("id not in params");
+        const product = await productServices.deleteProduct(id);
+        res.status(HTTP_SUCCESS).json({message: "Product deleted successfully", product});
+    } catch (error) {
+        res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+    }
+}

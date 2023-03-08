@@ -7,4 +7,5 @@ router.put("/:id", productController.updateProduct)
 router.get("/:id", productController.getProductById)
 router.post("/", productController.createProduct)
 router.get("/search?keyword=:keyword", productController.searchKeyword)
+router.delete("/:id", productController.deleteProduct)
 module.exports = router;
