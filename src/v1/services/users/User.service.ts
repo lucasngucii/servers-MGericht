@@ -58,6 +58,15 @@ export const getUserById = async (id: string) => {
     throw error;
   }
 };
+export const getUserByUsername = async (username: string) => { 
+  try {
+    const foundUser = await userModel.findOne({ username });
+    !foundUser && new Error("User not found");
+    return foundUser;
+  } catch (error) {
+    throw error;
+  }
+}
 export const deleteUser = async (id: string) => {
   try {
     const deleteUser = await userModel.findByIdAndDelete(id);
