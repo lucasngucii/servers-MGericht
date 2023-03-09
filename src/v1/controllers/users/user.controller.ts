@@ -6,6 +6,7 @@ import {
 } from "../../constants/http-status/http_status";
 import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
+import { validateID } from "../../utils/validation/validateID";
 export const login = async (req: Request, res: Response) => {
   try {
     const user = await userServices.login(req.body);
@@ -22,24 +23,25 @@ export const register = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
-export const changePassword = async (req: Request, res: Response) => { 
+export const changePassword = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {currentPassword, newPassword} = req.body;
-    const user = await userServices.changePassword(id,currentPassword,newPassword);
+    validateID(id);
+    const { currentPassword, newPassword } = req.body;
+    const user = await userServices.changePassword(id, currentPassword, newPassword);
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
-}
-export const logout = async (req: Request, res: Response) => { 
+};
+export const logout = async (req: Request, res: Response) => {
   try {
     const user = await userServices.logout(req.body);
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
-}
+};
 
 // Admin Controller
 export const getUsers = async (req: Request, res: Response) => {
@@ -49,10 +51,11 @@ export const getUsers = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
-};    
+};
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    validateID(id);
     const user = await userServices.getUserById(id);
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
@@ -62,6 +65,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    validateID(id);
     await userServices.deleteUser(id);
     res.status(HTTP_SUCCESS).json({ message: "User deleted successfully" });
   } catch (error) {
@@ -71,9 +75,10 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    validateID(id);
     const user = await userServices.updateUser(id, req.body);
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
- };
+};
