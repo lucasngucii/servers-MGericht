@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Product } from "../products/product.model";
 export interface tag extends mongoose.Document { 
     name: string
-    decripstion: string
+    decripstion?: string
     product_id : Product["_id"];
     // category_id : Category["_id"];
 
