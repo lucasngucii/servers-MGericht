@@ -9,10 +9,8 @@ export const createCart = async (id: string, cart: DocumentDefinition<Cart> ) =>
         if (!userCheck) { 
             throw new Error("User not found")
         }
-        // check id product exists
-        const productCheck  =  await CartModel.findOne({ items: cart.items }).populate('productId')
         // check 
     } catch (error) {
         throw error
     }
-}
+} 
