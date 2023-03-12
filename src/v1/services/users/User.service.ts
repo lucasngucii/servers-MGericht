@@ -2,6 +2,7 @@ import { DocumentDefinition, Types } from "mongoose";
 import { user, userModel } from "../../models/users/user.model";
 import bcrypt from "bcrypt";
 import { getTokenUser } from "../../utils/tokens/token";
+import { generateRefreshToken } from '../../middlewares/jwt/refreshToken';
 
 export const login = async (user: DocumentDefinition<user>) => {
   try {
@@ -16,9 +17,14 @@ export const login = async (user: DocumentDefinition<user>) => {
     if (!isMatch) {
       throw new Error("Incorrect password");
     }
-    // get token
-    const token = getTokenUser(foundUser);
-    return { user: foundUser, token };
+     const refreshToken = generateRefreshToken(foundUser._id);
+    // get and save token
+    const updateUser = await userModel.findByIdAndUpdate(
+      foundUser._id,
+      { token: refreshToken },
+      { new: true }
+    );
+    return { user: foundUser, refreshToken };
   } catch (error) {
     throw error;
   }
@@ -58,7 +64,7 @@ export const getUserById = async (id: string) => {
     throw error;
   }
 };
-export const getUserByUsername = async (username: string) => { 
+export const getUserByUsername = async (username: string) => {
   try {
     const foundUser = await userModel.findOne({ username });
     !foundUser && new Error("User not found");
@@ -66,7 +72,7 @@ export const getUserByUsername = async (username: string) => {
   } catch (error) {
     throw error;
   }
-}
+};
 export const deleteUser = async (id: string) => {
   try {
     const deleteUser = await userModel.findByIdAndDelete(id);

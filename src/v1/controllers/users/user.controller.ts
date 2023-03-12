@@ -7,10 +7,15 @@ import {
 import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
 import { validateID } from "../../utils/validation/validateID";
+import { generateToken } from "../../middlewares/jwt/jwtToken";
 export const login = async (req: Request, res: Response) => {
   try {
     const user = await userServices.login(req.body);
-    res.status(HTTP_SUCCESS).json(user);
+    res.cookie("refreshToken", user.refreshToken, {
+      httpOnly: true,
+      maxAge: 72 * 60 * 60 * 1000,
+    });
+    res.status(HTTP_SUCCESS).json({ user: user, Token: generateToken(user.user._id) });
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
