@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as userController from "../../controllers/users/user.controller";
-import { isAdmin } from "../../middlewares/auth/isAdmin.mdl";
-import { authenticationToken } from "../../middlewares/jwt/authenticate";
+import { isAdmin } from "../../middlewares/auth/isAdmin";
+import { authenticationToken } from "../../middlewares/auth/authenticationToken";
 const router = Router();
 // User Router
 router.get("/login", userController.login);
