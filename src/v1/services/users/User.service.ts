@@ -30,7 +30,6 @@ export const login = async (user: DocumentDefinition<user>) => {
   }
 };
 
-
 export const register = async (user: DocumentDefinition<user>) => {
   try {
     const foundUser = await userModel.findOne({ username: user.username });
@@ -48,7 +47,6 @@ export const register = async (user: DocumentDefinition<user>) => {
   }
 };
 
-
 // get all users
 export const getUsers = async () => {
   try {
@@ -60,7 +58,6 @@ export const getUsers = async () => {
   }
 };
 
-
 export const getUserById = async (id: string) => {
   try {
     const foundUser = await userModel.findById(id);
@@ -71,17 +68,15 @@ export const getUserById = async (id: string) => {
   }
 };
 
-
 export const getUserByTokenAndUpdate = async (token: string) => {
   try {
-    const foundUser = await userModel.findOneAndUpdate({refreshToken: token}, { refreshToken: "" });
+    const foundUser = await userModel.findOneAndUpdate({ refreshToken: token }, { refreshToken: "" });
     !foundUser && new Error("User not found");
     return foundUser;
   } catch (error) {
     throw error;
   }
 };
-
 
 export const getUserByUsername = async (username: string) => {
   try {
@@ -93,7 +88,6 @@ export const getUserByUsername = async (username: string) => {
   }
 };
 
-
 export const deleteUser = async (id: string) => {
   try {
     const deleteUser = await userModel.findByIdAndDelete(id);
@@ -103,7 +97,6 @@ export const deleteUser = async (id: string) => {
     throw error;
   }
 };
-
 
 export const updateUser = async (id: string, user: DocumentDefinition<user>) => {
   try {
@@ -126,14 +119,24 @@ export const updateUser = async (id: string, user: DocumentDefinition<user>) => 
   }
 };
 
-
 export const changePassword = async (id: string, currentPassword: string, newPassword: string) => {
   try {
+    const foundUser = await userModel.findById(id);
+    if (!foundUser) {
+      throw new Error("User not found");
+    }
+    console.log({user: foundUser});
+    const isMatch = await bcrypt.compareSync(currentPassword, foundUser.password);
+    console.log({isMatch});
+    !isMatch && new Error("Incorrect password");
+    console.log(newPassword);
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    console.log(hashedPassword);
+    await userModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
   } catch (error) {
     throw error;
   }
 };
-
 
 export const logout = async (token: string) => {
   try {
@@ -143,7 +146,6 @@ export const logout = async (token: string) => {
     throw error;
   }
 };
-
 
 export const getUserByRefreshToken = async (refreshToken: string) => {
   try {

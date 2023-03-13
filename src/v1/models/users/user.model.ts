@@ -41,7 +41,7 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
     last_name: { type: String, required: true, trim: true },
     phone: { type: Number, required: true, trim: true },
     address: { type: [AddressSchema], required: true, trim: true },
-    refreshToken: { type: String, required: true, trim: true },
+    refreshToken: { type: String, trim: true, default: "" },
     role: { type: Boolean, required: true, trim: true },
   },
   {
