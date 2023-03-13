@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_SUCCESS,
@@ -9,6 +9,7 @@ import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
 import { validateID } from "../../utils/validation/validateID";
 import { generateToken } from "../../middlewares/jwt/jwtToken";
+import jwt from "jsonwebtoken";
 
 // Login user client
 export const login = async (req: Request, res: Response) => {
@@ -49,6 +50,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   try {
     const cookie = req.cookies;
+    console.log({ cookie: cookie });
     if (!cookie?.refreshToken) {
       res.status(HTTP_UNAUTHORIZED).json({ error: "No Refresh Token in Cookies" });
     }
@@ -112,4 +114,26 @@ export const updateUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
+};
+
+export const handleRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const secrectKey = process.env.JWT_SECRET || "";
+    const cookie = req.cookies;
+    if (!cookie?.refreshToken) {
+      throw new Error("No Refresh Token in Cookies");
+    }
+    const refreshToken = cookie.refreshToken;
+    const user = await userServices.getUserByRefreshToken(refreshToken);
+    if (!user) {
+      throw new Error("Invalid Refresh Token");
+    }
+    jwt.verify(refreshToken, secrectKey, (err: any, decoded: any) => {
+      if (err || user.id !== decoded.id) {
+        throw new Error("There is something wrong with refresh token");
+      }
+      const accessToken = generateToken(user?._id);
+      res.json({ accessToken });
+    });
+  } catch (error) {}
 };
