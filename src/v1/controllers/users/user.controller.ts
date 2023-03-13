@@ -8,6 +8,7 @@ import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
 import { validateID } from "../../utils/validation/validateID";
 import { generateToken } from "../../middlewares/jwt/jwtToken";
+import { HTTP_FORBIDDEN } from '../../constants/http-status/http_status';
 // Login user client
 export const login = async (req: Request, res: Response) => {
   try {
@@ -21,6 +22,8 @@ export const login = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 // register user client
 export const register = async (req: Request, res: Response) => {
   try {
@@ -30,6 +33,8 @@ export const register = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 export const changePassword = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -41,14 +46,29 @@ export const changePassword = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 export const logout = async (req: Request, res: Response) => {
   try {
-    const user = await userServices.logout(req.body);
+    const cookie = req.cookies;
+    if (!cookie?.refreshToken) {
+      res.status(HTTP_UNAUTHORIZED).json({ error: "No Refresh Token in Cookies" });
+    }
+    const refreshToken = cookie.refreshToken;
+    const user = await userServices.logout(refreshToken);
+    if (!user) {
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      });
+      res.status(HTTP_FORBIDDEN).json({ error: "Invalid Refresh Token" });
+    }
     res.status(HTTP_SUCCESS).json(user);
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
 
 // Admin Controller
 export const getUsers = async (req: Request, res: Response) => {
@@ -59,6 +79,8 @@ export const getUsers = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -69,6 +91,8 @@ export const getUserById = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -79,6 +103,8 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+
+
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

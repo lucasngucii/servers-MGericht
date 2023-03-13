@@ -64,6 +64,15 @@ export const getUserById = async (id: string) => {
     throw error;
   }
 };
+export const getUserByToken = async (token: string) => { 
+  try {
+    const foundUser = await userModel.findOne({ refreshToken: token });
+    !foundUser && new Error("User not found");
+    return foundUser;
+  } catch (error) {
+    throw error;
+  }
+}
 export const getUserByUsername = async (username: string) => {
   try {
     const foundUser = await userModel.findOne({ username });
@@ -109,8 +118,10 @@ export const changePassword = async (id: string, currentPassword: string, newPas
   }
 };
 
-export const logout = async (user: DocumentDefinition<user>) => {
+export const logout = async (token: string) => {
   try {
+    const foundUser = await userModel.findOne({ refreshToken: token });
+    return foundUser;
   } catch (error) {
     throw error;
   }
