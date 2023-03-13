@@ -29,6 +29,7 @@ export interface user extends mongoose.Document {
   phone: number;
   address: Address[];
   role: boolean;
+  refreshToken: string;
   createdAt: Date;
 }
 export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
@@ -40,6 +41,7 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
     last_name: { type: String, required: true, trim: true },
     phone: { type: Number, required: true, trim: true },
     address: { type: [AddressSchema], required: true, trim: true },
+    refreshToken: { type: String, required: true, trim: true },
     role: { type: Boolean, required: true, trim: true },
   },
   {

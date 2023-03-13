@@ -8,6 +8,7 @@ import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
 import { validateID } from "../../utils/validation/validateID";
 import { generateToken } from "../../middlewares/jwt/jwtToken";
+// Login user client
 export const login = async (req: Request, res: Response) => {
   try {
     const user = await userServices.login(req.body);
@@ -20,6 +21,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
+// register user client
 export const register = async (req: Request, res: Response) => {
   try {
     const user = await userServices.register(req.body);

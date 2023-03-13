@@ -21,7 +21,7 @@ export const login = async (user: DocumentDefinition<user>) => {
     // get and save token
     const updateUser = await userModel.findByIdAndUpdate(
       foundUser._id,
-      { token: refreshToken },
+      { refreshToken: refreshToken },
       { new: true }
     );
     return { user: foundUser, refreshToken };
@@ -115,3 +115,11 @@ export const logout = async (user: DocumentDefinition<user>) => {
     throw error;
   }
 };
+export const getUserByRefreshToken = async (refreshToken: string) => { 
+  try {
+    const foundUser = await userModel.findOne({ refreshToken });
+    return foundUser;
+  } catch (error) {
+    throw error;
+  }
+}
