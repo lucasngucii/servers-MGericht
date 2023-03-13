@@ -3,12 +3,13 @@ import {
   HTTP_INTERNAL_SERVER_ERROR,
   HTTP_SUCCESS,
   HTTP_UNAUTHORIZED,
+  HTTP_FORBIDDEN,
 } from "../../constants/http-status/http_status";
 import { getErrorMessage } from "../../utils/error/errorMessage";
 import * as userServices from "../../services/users/User.service";
 import { validateID } from "../../utils/validation/validateID";
 import { generateToken } from "../../middlewares/jwt/jwtToken";
-import { HTTP_FORBIDDEN } from "../../constants/http-status/http_status";
+
 // Login user client
 export const login = async (req: Request, res: Response) => {
   try {
