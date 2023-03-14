@@ -49,7 +49,15 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    
+    const cookies = req.cookies;
+    if (!cookies?.refreshToken) throw new Error("No token provided");
+    const user = await userServices.logout(cookies.refreshToken);
+    if (!user) {
+      res.clearCookie("refreshToken", { httpOnly: true, secure: true });
+      return res.status(HTTP_FORBIDDEN).json({ error: "User not found" });
+    }
+    res.clearCookie("refreshToken", { httpOnly: true, secure: true });
+    res.status(HTTP_SUCCESS).json({ message: "Logout successfully" });
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }

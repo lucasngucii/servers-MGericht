@@ -20,7 +20,7 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 // routers
 app.use(require("./routes/index.router"));
 

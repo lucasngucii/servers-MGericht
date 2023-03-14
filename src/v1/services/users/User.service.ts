@@ -125,9 +125,9 @@ export const changePassword = async (id: string, currentPassword: string, newPas
     if (!foundUser) {
       throw new Error("User not found");
     }
-    console.log({user: foundUser});
+    console.log({ user: foundUser });
     const isMatch = await bcrypt.compareSync(currentPassword, foundUser.password);
-    console.log({isMatch});
+    console.log({ isMatch });
     !isMatch && new Error("Incorrect password");
     console.log(newPassword);
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
@@ -141,6 +141,7 @@ export const changePassword = async (id: string, currentPassword: string, newPas
 export const logout = async (token: string) => {
   try {
     const foundUser = await userModel.findOne({ refreshToken: token });
+    await userModel.findOneAndUpdate({ refreshToken: token }, { refreshToken: "" });
     return foundUser;
   } catch (error) {
     throw error;
