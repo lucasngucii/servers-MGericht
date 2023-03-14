@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const cookieParser = require("cookie-parser");
 
 app.connect(require("./database/connectdb"));
 // use middleware
