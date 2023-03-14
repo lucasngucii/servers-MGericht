@@ -49,25 +49,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    const cookie = req.cookies.value;
-    console.log(cookie )
-   /*  if (!cookie?.refreshToken) {
-      res.status(HTTP_UNAUTHORIZED).json({ error: "No Refresh Token in Cookies" });
-    }
-    const refreshToken = cookie.refreshToken;
-    const user = await userServices.logout(refreshToken);
-    if (!user) {
-      res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: true,
-      });
-      res.status(HTTP_FORBIDDEN).json({ error: "Invalid Refresh Token" });
-    }
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: true,
-    });
-    res.status(HTTP_SUCCESS).json(user); */
+    
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
