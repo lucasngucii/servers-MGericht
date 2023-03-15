@@ -1,7 +1,6 @@
 import { DocumentDefinition, Types } from "mongoose";
 import { user, userModel } from "../../models/users/user.model";
 import bcrypt from "bcrypt";
-import { getTokenUser } from "../../utils/tokens/token";
 import { generateRefreshToken } from "../../middlewares/jwt/refreshToken";
 
 export const login = async (user: DocumentDefinition<user>) => {
@@ -19,11 +18,7 @@ export const login = async (user: DocumentDefinition<user>) => {
     }
     const refreshToken = generateRefreshToken(foundUser._id);
     // get and save token
-    const updateUser = await userModel.findByIdAndUpdate(
-      foundUser._id,
-      { refreshToken: refreshToken },
-      { new: true }
-    );
+    await userModel.findByIdAndUpdate(foundUser._id, { token: refreshToken }, { new: true });
     return { user: foundUser, refreshToken };
   } catch (error) {
     throw error;

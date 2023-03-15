@@ -1,13 +1,13 @@
 import { Router } from "express";
 import * as userController from "../../controllers/users/user.controller";
 import { isAdmin } from "../../middlewares/auth/isAdmin";
-import { authenticationToken } from "../../middlewares/auth/authenticationToken";
+import { authMiddleware } from "../../middlewares/auth/authMiddleware";
 const router = Router();
 // get
 router.get("/login", userController.login);
 router.get("/logout", userController.logout);
-router.get("/get-users", authenticationToken, userController.getUsers);
-router.get("/:id", isAdmin, userController.getUserById);
+router.get("/get-users", authMiddleware, userController.getUsers);
+router.get("/:id", authMiddleware, userController.getUserById);
 router.get("/refresh", userController.handleRefreshToken);
 // post
 router.post("/registers", userController.register);
