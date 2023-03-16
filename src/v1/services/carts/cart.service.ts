@@ -10,8 +10,7 @@ export const addProductToCart = async (userId: string, productId: string) => {
         if (!user) throw new Error("User not found");
         const product = await productModel.findById(productId).exec();
         if (!product) throw new Error("Product not found");
-
-        const itemAdded  = user.cart.find((item)=> console.log(item));
+     
         
     } catch (error) {
         throw error;
