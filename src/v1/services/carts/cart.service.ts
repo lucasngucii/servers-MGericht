@@ -1,16 +1,19 @@
+
 import { DocumentDefinition } from "mongoose"
 import { Cart, CartModel } from '../../models/carts/cart.model';
 import { user, userModel } from '../../models/users/user.model';
 import { Product, productModel } from "../../models/products/product.model"
-export const createCart = async (id: string, cart: DocumentDefinition<Cart> ) => { 
+
+export const addProductToCart = async (userId: string, productId: string) => {
     try {
-        // check id user exists
-        const userCheck = await userModel.findById(id)
-        if (!userCheck) { 
-            throw new Error("User not found")
-        }
-        // check 
+        const user = await userModel.findById(userId).select("-password").exec();
+        if (!user) throw new Error("User not found");
+        const product = await productModel.findById(productId).exec();
+        if (!product) throw new Error("Product not found");
+
+        const itemAdded  = user.cart.find((item)=> console.log(item));
+        
     } catch (error) {
-        throw error
+        throw error;
     }
 } 

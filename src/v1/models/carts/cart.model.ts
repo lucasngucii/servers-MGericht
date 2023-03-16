@@ -16,7 +16,6 @@ export const cartItemModel: mongoose.Model<cartItem> = mongoose.model<cartItem>(
 export interface Cart extends mongoose.Document {
   user_id: user["_id"];
   items: cartItem["_id"][];
-
 }
 export const CartSchema: mongoose.Schema<Cart> = new mongoose.Schema(
   {
