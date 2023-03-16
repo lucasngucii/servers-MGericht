@@ -7,7 +7,8 @@ export const userCart = async (req: Request, res: Response, next: NextFunction) 
   const userId = req.user._id;
   const { cart } = req.body;
   try {
-    
+      
+
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({message: getErrorMessage(error)});
   }

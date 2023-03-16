@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+export type cart = {
+  productId: string;
+  quantity: number;
+};
 export interface Address extends mongoose.Document {
   lna: string;
   lng: string;
@@ -30,6 +34,7 @@ export interface user extends mongoose.Document {
   address: Address[];
   role: boolean;
   token: string;
+  cart: cart[];
   createdAt: Date;
 }
 export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
@@ -40,9 +45,18 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
     first_name: { type: String, required: true, trim: true },
     last_name: { type: String, required: true, trim: true },
     phone: { type: Number, required: true, trim: true },
-    address: { type: [AddressSchema], required: true, trim: true },
+    address: { type: [AddressSchema], trim: true },
     token: { type: String, trim: true, default: "" },
-    role: { type: Boolean, required: true, trim: true },
+    role: { type: Boolean, trim: true, default: false },
+    cart: {
+      type: [
+        {
+          productId: { type: mongoose.Schema.Types.ObjectId, ref: "Cart", required: true },
+          quantity: { type: Number, required: true },
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,
