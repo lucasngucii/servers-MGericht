@@ -10,7 +10,7 @@ export interface tag extends mongoose.Document {
 export const tagSchema: mongoose.Schema<tag> = new mongoose.Schema({
     name: { type: String, required: true, unique: true, lowercase: true, trim: true },
     decripstion: { type: String, required: true, trim: true },
-    product_id: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+    product_id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
