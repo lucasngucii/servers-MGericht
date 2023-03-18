@@ -11,9 +11,9 @@ export const createMenu = async (req: Request, res: Response) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
-export const getMenus = async (req: Request, res: Response) => { 
+export const getAllMenus = async (req: Request, res: Response) => { 
     try {
-        
+        const menus = await menuService.getAllMenus();
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
