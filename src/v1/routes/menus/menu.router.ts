@@ -4,5 +4,5 @@ import * as menuController from "../../controllers/menus/menu.controller";
 const router = Router();
 
 router.post("/", isAdmin, menuController.createMenu);
-
+//router.get("/", )
 module.exports = router;

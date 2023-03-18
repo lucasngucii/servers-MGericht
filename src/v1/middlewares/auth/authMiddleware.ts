@@ -15,6 +15,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         const user = await userService.getUserById(decoded?.id);
         //@ts-ignore
         req.user = user;
+        //@ts-ignore
         next();
       }
     } catch (error) {

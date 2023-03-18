@@ -22,6 +22,10 @@ export const getProductById = async (id: string) => {
 export const createProduct = async (product: DocumentDefinition<Product>) => {
   try {
     !product && new Error("Product not found");
+    // check if product exist
+    const productFound = await productModel.findOne({ name: product.name });
+    if (productFound) throw new Error("Product already exist");
+    // create new product
     const newProduct = await productModel.create(product);
     await newProduct.save();
   } catch (error) {
