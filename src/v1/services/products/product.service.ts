@@ -37,7 +37,6 @@ export const updateProduct = async (id: string, product: DocumentDefinition<Prod
     !id && !product && new Error("id or product not in params");
     const updatedProduct = await productModel.findByIdAndUpdate(id, product, { new: true });
     !updatedProduct && new Error("Product not found");
-    /* await updatedProduct?.save(); */
     return updatedProduct;
   } catch (error) {
     throw error;
