@@ -6,6 +6,8 @@ export const createMenu = async (menu: DocumentDefinition<Menu>) => {
     // check if menu exist
     const menuFound = await MenuModel.findOne({ name: menu.name });
     if (menuFound) throw new Error("Menu already exist");
+
+    
     // create new menu
     const newMenu = await MenuModel.create(menu);
     await newMenu.save();

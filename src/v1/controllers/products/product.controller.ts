@@ -5,7 +5,9 @@ import * as productServices from "../../services/products/product.service";
 import { validateID } from "../../utils/validation/validateID";
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const product = await productServices.getAllProduct();
+    const queryObj = { ...req.query };
+    console.log(queryObj);
+    const product = await productServices.getAllProduct(queryObj);
     res.status(HTTP_SUCCESS).json(product);
   } catch (error) {
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });

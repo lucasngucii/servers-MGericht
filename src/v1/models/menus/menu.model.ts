@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { Product } from "../products/product.model";
 
 export interface Menu extends mongoose.Document {
@@ -12,7 +12,12 @@ export const MenuSchema: mongoose.Schema<Menu> = new mongoose.Schema({
   name: { type: String, required: true },
   price: { type: Number },
   description: { type: String, required: true },
-  item: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+  item: [{
+    product_id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+    price: { type: mongoose.Schema.Types.Number, ref: "Product" },
+    name: { type: mongoose.Schema.Types.String, ref: "Product" },
+    image: { type: mongoose.Schema.Types.String, ref: "Product" },
+  }],
   image: { type: String },
 });
 

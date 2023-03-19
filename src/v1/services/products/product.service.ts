@@ -1,8 +1,8 @@
 import { DocumentDefinition } from "mongoose";
 import { Product, productModel } from "../../models/products/product.model";
-export const getAllProduct = async () => {
+export const getAllProduct = async (product: Object) => {
   try {
-    const productFound = await productModel.find();
+    const productFound = await productModel.where("Product").equals({ ...product });
     !productFound && new Error("Product not found");
     return productFound;
   } catch (error) {
