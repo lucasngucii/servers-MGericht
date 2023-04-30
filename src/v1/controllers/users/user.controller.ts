@@ -58,7 +58,7 @@ export const logout = async (req: Request, res: Response) => {
     }
     res.clearCookie("refreshToken", { httpOnly: true, secure: true });
     res.status(HTTP_SUCCESS).json({ message: "Logout successfully" });
-  } catch (error) {
+  } catch (error) { 
     res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
   }
 };
@@ -112,3 +112,15 @@ export const handleRefreshToken = async (req: Request, res: Response, next: Next
     console.log(cookie);
   } catch (error) {}
 };
+export const resetPassword = async (req: Request, res: Response) => {
+    try {
+      const { email } = req.body;
+      const foundUser = await userServices.getUserByEmail(email);
+      !foundUser && new Error("User not found");
+      const { id } = foundUser?._id;
+
+      /* res.status(HTTP_SUCCESS).json(user); */
+    } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+    }
+ }

@@ -34,3 +34,4 @@ export const CartSchema: mongoose.Schema<Cart> = new mongoose.Schema(
   }
 );
 export const CartModel: mongoose.Model<Cart> = mongoose.model<Cart>("Cart", CartSchema);
+

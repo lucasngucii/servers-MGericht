@@ -151,3 +151,11 @@ export const getUserByRefreshToken = async (refreshToken: string) => {
     throw error;
   }
 };
+export const getUserByEmail = async (user: DocumentDefinition<user>) => { 
+  try {
+    const foundUser = await userModel.findOne({ email: user.email });
+    return foundUser;
+  } catch (error) {
+    throw error;
+  }
+}
