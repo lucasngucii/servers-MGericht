@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { user } from "../users/user.model";
-import { tag } from "../tags/tag.model";
 
 export interface rating extends mongoose.Document {
   userId: user["_id"];
@@ -18,7 +17,7 @@ export interface Product extends mongoose.Document {
   description: string;
   image: string;
   category: string;
-  tags: tag[];
+  tags: mongoose.Schema.Types.ObjectId[];
   ratings: rating[];
 }
 export const ProductSchema: mongoose.Schema<Product> = new mongoose.Schema(
