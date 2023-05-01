@@ -49,9 +49,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
    try {
-      const cookies = req.cookies;
-      if (!cookies?.refreshToken) throw new Error('No token provided');
-      const user = await userServices.logout(cookies.refreshToken);
+      const user = await userServices.logout(req.cookies.refreshToken);
       if (!user) {
          res.clearCookie('refreshToken', { httpOnly: true, secure: true });
          return res.status(HTTP_FORBIDDEN).json({ error: 'User not found' });

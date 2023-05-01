@@ -4,13 +4,13 @@ import { isAdmin } from "../../middlewares/auth/isAdmin";
 import { authMiddleware } from "../../middlewares/auth/authMiddleware";
 const router = Router();
 // get
-router.get("/login", userController.login);
+router.get("/login", userController.login);//done
 router.get("/logout", userController.logout);
 router.get("/", authMiddleware, userController.getUsers);
 router.get("/:id", authMiddleware, userController.getUserById);
 router.get("/refresh", userController.handleRefreshToken);
 // post
-router.post("/registers", userController.register);
+router.post("/registers", userController.register); // done
 router.post("/:id/change-password", userController.changePassword);
 // put
 router.put("/:id", userController.updateUser);
