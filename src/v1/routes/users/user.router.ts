@@ -12,6 +12,7 @@ router.get("/refresh", userController.handleRefreshToken);
 // post
 router.post("/registers", userController.register); // done
 router.post("/:id/change-password", userController.changePassword);
+router.post("/reset-password", userController.resetPassword);
 // put
 router.put("/:id", userController.updateUser);
 // delete

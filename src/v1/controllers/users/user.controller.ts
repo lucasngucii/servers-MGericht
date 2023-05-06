@@ -50,6 +50,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
    try {
       const user = await userServices.logout(req.cookies.refreshToken);
+
       if (!user) {
          res.clearCookie('refreshToken', { httpOnly: true, secure: true });
          return res.status(HTTP_FORBIDDEN).json({ error: 'User not found' });
@@ -104,15 +105,20 @@ export const updateUser = async (req: Request, res: Response) => {
    }
 };
 
-export const handleRefreshToken = async (
-   req: Request,
-   res: Response,
-   next: NextFunction
-) => {
+export const handleRefreshToken = async (req: Request, res: Response) => {
    try {
       const cookie = req.cookies;
       console.log(cookie);
-   } catch (error) {}
+      if (!cookie?.refreshToken) throw new Error('Token not found');
+      const refreshToken = cookie.refreshToken;
+      const user = await userServices.getUserByRefreshToken(refreshToken);
+      console.log(user);
+      if (!user) throw new Error('User not found');
+
+
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
 };
 export const resetPassword = async (req: Request, res: Response) => {
    try {
