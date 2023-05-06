@@ -126,6 +126,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       const foundUser = await userServices.getUserByEmail(email);
       !foundUser && new Error('User not found');
       const { id } = foundUser?._id;
+      
 
       /* res.status(HTTP_SUCCESS).json(user); */
    } catch (error) {
