@@ -145,12 +145,9 @@ export const changePassword = async (
 };
 
 export const logout = async (token: string) => {
-  try {
-     console.log(token);
-      const foundUser = await userModel.findOneAndUpdate(
-         { token: token },
-         { token: '' }
-      );
+   try {
+      console.log(token);
+      const foundUser = await userModel.findOneAndUpdate({ token: token }, { token: '' });
       return foundUser;
    } catch (error) {
       throw error;
@@ -159,8 +156,8 @@ export const logout = async (token: string) => {
 
 export const getUserByRefreshToken = async (refreshToken: string) => {
    try {
-     const foundUser = await userModel.findOne({ token: refreshToken });
-     console.log({foundUser});
+      const foundUser = await userModel.findOne({ token: refreshToken });
+      console.log({ foundUser });
       return foundUser;
    } catch (error) {
       throw error;
@@ -170,6 +167,37 @@ export const getUserByEmail = async (user: DocumentDefinition<user>) => {
    try {
       const foundUser = await userModel.findOne({ email: user.email });
       return foundUser;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const blockUser = async (id: string) => {
+   try {
+      const blockUser = await userModel.findByIdAndUpdate(
+         id,
+         {
+            isBlocked: true,
+         },
+         {
+            new: true,
+         }
+      );
+      !blockUser && new Error('User not found');
+      return blockUser;
+   } catch (error) {
+      throw error;
+   }
+};
+export const unblockUser = async (id: string) => {
+   try {
+      const unBlockUser = await userModel.findByIdAndUpdate(
+         id,
+         { isBlocked: false },
+         { new: true }
+      );
+      !unBlockUser && new Error('User not found');
+      return unBlockUser;
    } catch (error) {
       throw error;
    }

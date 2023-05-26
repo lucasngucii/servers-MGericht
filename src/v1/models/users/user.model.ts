@@ -23,6 +23,7 @@ export interface user extends mongoose.Document {
    role: boolean;
    token: string;
    cart: cart[];
+   isBlocked: boolean;
    createdAt: Date;
 }
 export const userSchema: mongoose.Schema<user> = new mongoose.Schema(

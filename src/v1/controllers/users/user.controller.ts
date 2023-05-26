@@ -2,14 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import {
    HTTP_INTERNAL_SERVER_ERROR,
    HTTP_SUCCESS,
-   HTTP_UNAUTHORIZED,
    HTTP_FORBIDDEN,
 } from '../../constants/http-status/http_status';
 import { getErrorMessage } from '../../utils/error/errorMessage';
 import * as userServices from '../../services/users/User.service';
 import { validateID } from '../../utils/validation/validateID';
 import { generateToken } from '../../middlewares/jwt/jwtToken';
-import jwt from 'jsonwebtoken';
 
 // Login user client
 export const login = async (req: Request, res: Response) => {
@@ -114,8 +112,6 @@ export const handleRefreshToken = async (req: Request, res: Response) => {
       const user = await userServices.getUserByRefreshToken(refreshToken);
       console.log(user);
       if (!user) throw new Error('User not found');
-
-
    } catch (error) {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
@@ -126,10 +122,35 @@ export const resetPassword = async (req: Request, res: Response) => {
       const foundUser = await userServices.getUserByEmail(email);
       !foundUser && new Error('User not found');
       const { id } = foundUser?._id;
-      
 
       /* res.status(HTTP_SUCCESS).json(user); */
    } catch (error) {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
 };
+
+export const blockUser = async (req: Request, res: Response) => {
+   try {
+      const { id } = req.params;
+      validateID(id);
+      const user = await userServices.blockUser(id);
+      res.status(HTTP_SUCCESS).json(user);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
+
+export const unblockUser = async (req: Request, res: Response) => {
+   try {
+      const { id } = req.params;
+      validateID(id);
+      const user = await userServices.unblockUser(id);
+      res.status(HTTP_SUCCESS).json(user);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
+
+
+
+
