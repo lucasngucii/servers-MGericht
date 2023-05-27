@@ -4,7 +4,6 @@ import { getErrorMessage } from "../../utils/error/errorMessage";
 import { getUserById } from "../../services/users/User.service";
 export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //@ts-ignorer
     const { id } = req.user;
     const user = await getUserById(id);
     if (user?.role !== true) {

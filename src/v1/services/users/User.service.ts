@@ -133,11 +133,8 @@ export const changePassword = async (
       }
       console.log({ user: foundUser });
       const isMatch = await bcrypt.compareSync(currentPassword, foundUser.password);
-      console.log({ isMatch });
       !isMatch && new Error('Incorrect password');
-      console.log(newPassword);
       const hashedPassword = bcrypt.hashSync(newPassword, 10);
-      console.log(hashedPassword);
       await userModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
    } catch (error) {
       throw error;

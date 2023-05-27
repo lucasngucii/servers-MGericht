@@ -12,10 +12,10 @@ router.get('/refresh', userController.handleRefreshToken);
 
 // post
 router.post('/registers', userController.register); // done
-router.post('/:id/change-password', userController.changePassword);
 router.post('/reset-password', userController.resetPassword);
 // put
-router.put('/:id', userController.updateUser);
+router.put('/:id/change-password', userController.changePassword);// done
+router.put('/:id', userController.updateUser); //
 router.put('/:id/activate', authMiddleware, isAdmin, userController.unblockUser);
 router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser);
 // delete
