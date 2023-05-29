@@ -117,13 +117,10 @@ export const handleRefreshToken = async (req: Request, res: Response) => {
    }
 };
 export const resetPassword = async (req: Request, res: Response) => {
+   const { email, newPassword } = req.body;
    try {
-      const { email } = req.body;
-      const foundUser = await userServices.getUserByEmail(email);
-      !foundUser && new Error('User not found');
-      const { id } = foundUser?._id;
-
-      /* res.status(HTTP_SUCCESS).json(user); */
+      const user = await userServices.changePasswordForget(email, newPassword);
+      res.status(HTTP_SUCCESS).json(user);
    } catch (error) {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
@@ -150,7 +147,3 @@ export const unblockUser = async (req: Request, res: Response) => {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
 };
-
-
-
-

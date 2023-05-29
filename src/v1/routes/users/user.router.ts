@@ -14,7 +14,8 @@ router.get('/refresh', userController.handleRefreshToken);
 router.post('/registers', userController.register); // done
 router.post('/reset-password', userController.resetPassword);
 // put
-router.put('/:id/change-password', userController.changePassword);// done
+router.put('/:id/change-password', userController.changePassword); // done
+router.put('forgot-password-token', userController.resetPassword);
 router.put('/:id', userController.updateUser); //
 router.put('/:id/activate', authMiddleware, isAdmin, userController.unblockUser);
 router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser);

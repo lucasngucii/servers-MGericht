@@ -140,7 +140,18 @@ export const changePassword = async (
       throw error;
    }
 };
+export const changePasswordForget = async (email:  string, newPassword: string) => { 
+   try {
+      const foundUser = await userModel.findOne({ email });
+      if (!foundUser) { 
+         throw new Error(`User with email ${email} not found`);
+      }
+      
 
+   } catch (error) {
+      
+   }
+}
 export const logout = async (token: string) => {
    try {
       console.log(token);
