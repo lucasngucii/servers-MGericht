@@ -2,6 +2,9 @@ import { DocumentDefinition, Types } from 'mongoose';
 import { user, userModel } from '../../models/users/user.model';
 import bcrypt from 'bcrypt';
 import { generateRefreshToken } from '../../middlewares/jwt/refreshToken';
+import nodemailer from 'nodemailer';
+import configs from '../../configs';
+import jwt from 'jsonwebtoken';
 
 export const login = async (user: DocumentDefinition<user>) => {
    try {
@@ -30,16 +33,34 @@ export const login = async (user: DocumentDefinition<user>) => {
 };
 
 export const register = async (user: DocumentDefinition<user>) => {
+   const bcrypt_salt = parseInt(process.env.BCRYPT_SALT as string);
    try {
       const foundUser = await userModel.findOne({ username: user.username });
       if (foundUser) {
          throw new Error('User already exists');
       }
       // hash password
-      const hashedPassword = bcrypt.hashSync(user.password, 10);
+      const hashedPassword = bcrypt.hashSync(user.password, bcrypt_salt);
       // create new user
-      const newUser = await userModel.create({ ...user, password: hashedPassword });
+      const newUser = await userModel.create({
+         ...user,
+         password: hashedPassword,
+      });
       await newUser.save();
+      // verify email
+      const verificationToken = generateRefreshToken(newUser._id);
+      newUser.verificationToken = verificationToken;
+      const transporter = nodemailer.createTransport(configs.mail);
+      const verificattionEmail =
+         configs.mail.verificationEmailTemplate(verificationToken);
+
+      await transporter.sendMail({
+         from: `Mgrencht app <${configs.mail.auth.user}>`,
+         to: newUser.email,
+         subject: configs.mail.verificationEmailSubject,
+         html: verificattionEmail,
+      });
+
       return newUser;
    } catch (error) {
       throw error;
@@ -140,18 +161,14 @@ export const changePassword = async (
       throw error;
    }
 };
-export const changePasswordForget = async (email:  string, newPassword: string) => { 
+export const changePasswordForget = async (email: string, newPassword: string) => {
    try {
       const foundUser = await userModel.findOne({ email });
-      if (!foundUser) { 
+      if (!foundUser) {
          throw new Error(`User with email ${email} not found`);
       }
-      
-
-   } catch (error) {
-      
-   }
-}
+   } catch (error) {}
+};
 export const logout = async (token: string) => {
    try {
       console.log(token);
@@ -206,6 +223,25 @@ export const unblockUser = async (id: string) => {
       );
       !unBlockUser && new Error('User not found');
       return unBlockUser;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const verifyEmail = async (verificationToken: string) => {
+   try {
+      const decodedToken: any = jwt.verify(
+         verificationToken,
+         process.env.JWT_SECRET as string
+      );
+      const { email } = decodedToken;
+      const User = await userModel.findOneAndUpdate(
+         { email, verificationToken: verificationToken },
+         { isVerified: true, verificationToken: null },
+         { new: true }
+      );
+      !User && new Error('User not found');
+      return User;
    } catch (error) {
       throw error;
    }

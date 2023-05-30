@@ -9,6 +9,7 @@ router.get('/logout', userController.logout); //done
 router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
+router.get('/verify-email',isAdmin, userController.verifyEmail);
 
 // post
 router.post('/registers', userController.register); // done

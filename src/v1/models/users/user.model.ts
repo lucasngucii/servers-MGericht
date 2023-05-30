@@ -24,9 +24,11 @@ export interface user extends mongoose.Document {
    token: string;
    cart: cart[];
    isBlocked: boolean;
+   isVerified: boolean;
    passwordChangedAt: Date;
    passwordResetToken: String;
    passwordResetExpires: Date;
+   verificationToken: string | null;
    createdAt: Date;
 }
 export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
@@ -74,6 +76,8 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
       passwordChangedAt: { type: Date, default: Date.now },
       passwordResetToken: { type: String, default: '' },
       passwordResetExpires: { type: Date },
+      isVerified: { type: Boolean, default: false },
+      verificationToken: { type: String, default: null },
    },
    {
       timestamps: true,
