@@ -9,11 +9,11 @@ router.get('/logout', userController.logout); //done
 router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
-router.get('/verify-email',isAdmin, userController.verifyEmail);
-
+//router.get('/verify-email', userController.verifyEmail);
+ 
 // post
 router.post('/registers', userController.register); // done
-router.post('/reset-password', userController.resetPassword);
+router.post('/reset-password', userController.resetPassword);   
 // put
 router.put('/:id/change-password', userController.changePassword); // done
 router.put('forgot-password-token', userController.resetPassword);

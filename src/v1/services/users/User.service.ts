@@ -23,7 +23,7 @@ export const login = async (user: DocumentDefinition<user>) => {
       // get and save token
       await userModel.findByIdAndUpdate(
          foundUser._id,
-         { token: refreshToken },
+         { verificationToken: refreshToken },
          { new: true }
       );
       return { user: foundUser, refreshToken };
@@ -41,26 +41,28 @@ export const register = async (user: DocumentDefinition<user>) => {
       }
       // hash password
       const hashedPassword = bcrypt.hashSync(user.password, bcrypt_salt);
+      // generate verification token
+      const verificationToken = generateRefreshToken(user._id);
+      /* // send verification email
+      const transporter = nodemailer.createTransport(configs.mail);
+      console.log("tét 1",{ transporter });
+      const verificationEmail = configs.mail.verificationEmailTemplate(verificationToken);
+      console.log("tet2",{ verificationEmail });
+      await transporter.sendMail({
+         from: `"MyApp" <${configs.mail.auth.user}>`,
+         to: user?.email,
+         subject: configs.mail.verificationEmailSubject,
+         html: verificationEmail,
+      }); */
+
       // create new user
       const newUser = await userModel.create({
          ...user,
          password: hashedPassword,
+         verificationToken,
       });
+
       await newUser.save();
-      // verify email
-      const verificationToken = generateRefreshToken(newUser._id);
-      newUser.verificationToken = verificationToken;
-      const transporter = nodemailer.createTransport(configs.mail);
-      const verificattionEmail =
-         configs.mail.verificationEmailTemplate(verificationToken);
-
-      await transporter.sendMail({
-         from: `Mgrencht app <${configs.mail.auth.user}>`,
-         to: newUser.email,
-         subject: configs.mail.verificationEmailSubject,
-         html: verificattionEmail,
-      });
-
       return newUser;
    } catch (error) {
       throw error;

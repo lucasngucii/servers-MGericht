@@ -13,7 +13,7 @@ export default {
       verificationEmailTemplate: (verificationToken: string) => `
         <h1>Verify Your Email</h1>
         <p>Click the link below to verify your email:</p>
-        <a href="http://localhost:3000/verify-email/${verificationToken}">Verify Email</a>
+        <a href="http://localhost:3030/verify-email/${verificationToken}">Verify Email</a>
       `,
    },
    jwt_secret: process.env.JWT_SECRET,

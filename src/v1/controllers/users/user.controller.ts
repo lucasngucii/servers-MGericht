@@ -103,7 +103,7 @@ export const updateUser = async (req: Request, res: Response) => {
    }
 };
 
-export const handleRefreshToken = async (req: Request, res: Response) => {
+export const  handleRefreshToken = async (req: Request, res: Response) => {
    try {
       const cookie = req.cookies;
       console.log(cookie);
@@ -148,12 +148,4 @@ export const unblockUser = async (req: Request, res: Response) => {
    }
 };
 
-export const verifyEmail = async (req: Request, res: Response) => {
-   const { verificationToken } = req.params;
-   try {
-      const result = await userServices.verifyEmail(verificationToken);
-      res.status(HTTP_SUCCESS).json(result);
-   } catch (error) {
-      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
-   }
-};
+

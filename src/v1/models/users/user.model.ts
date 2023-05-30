@@ -21,7 +21,6 @@ export interface user extends mongoose.Document {
    phone: number;
    address: Address[];
    role: boolean;
-   token: string;
    cart: cart[];
    isBlocked: boolean;
    isVerified: boolean;
@@ -58,7 +57,6 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
          ],
          trim: true,
       },
-      token: { type: String, trim: true, default: '' },
       role: { type: Boolean, trim: true, default: false },
       cart: {
          type: [
@@ -77,7 +75,7 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
       passwordResetToken: { type: String, default: '' },
       passwordResetExpires: { type: Date },
       isVerified: { type: Boolean, default: false },
-      verificationToken: { type: String, default: null },
+      verificationToken: { type: String, default: null, trim: true },
    },
    {
       timestamps: true,
