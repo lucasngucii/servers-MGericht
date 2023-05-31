@@ -35,6 +35,7 @@ export const login = async (user: DocumentDefinition<user>) => {
 export const register = async (user: DocumentDefinition<user>) => {
    const bcrypt_salt = parseInt(process.env.BCRYPT_SALT as string);
    try {
+      // check if user exists
       const foundUser = await userModel.findOne({ username: user.username });
       if (foundUser) {
          throw new Error('User already exists');
@@ -43,18 +44,6 @@ export const register = async (user: DocumentDefinition<user>) => {
       const hashedPassword = bcrypt.hashSync(user.password, bcrypt_salt);
       // generate verification token
       const verificationToken = generateRefreshToken(user._id);
-      /* // send verification email
-      const transporter = nodemailer.createTransport(configs.mail);
-      console.log("tét 1",{ transporter });
-      const verificationEmail = configs.mail.verificationEmailTemplate(verificationToken);
-      console.log("tet2",{ verificationEmail });
-      await transporter.sendMail({
-         from: `"MyApp" <${configs.mail.auth.user}>`,
-         to: user?.email,
-         subject: configs.mail.verificationEmailSubject,
-         html: verificationEmail,
-      }); */
-
       // create new user
       const newUser = await userModel.create({
          ...user,

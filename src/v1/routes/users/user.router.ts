@@ -17,10 +17,14 @@ router.post('/reset-password', userController.resetPassword);
 // put
 router.put('/:id/change-password', userController.changePassword); // done
 router.put('forgot-password-token', userController.resetPassword);
-router.put('/:id', userController.updateUser); //
-router.put('/:id/activate', authMiddleware, isAdmin, userController.unblockUser);
-router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser);
+router.put('/:id', userController.updateUser); // done
+router.put('/:id/activate', authMiddleware, isAdmin, userController.unblockUser); // done
+router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser); // done
 // delete
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id',isAdmin, userController.deleteUser);
+
+// customer
+
+//router.get('/customer', userController.getCustomerById);
 
 module.exports = router;
