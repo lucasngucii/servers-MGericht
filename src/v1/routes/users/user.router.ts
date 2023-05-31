@@ -10,10 +10,10 @@ router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
 //router.get('/verify-email', userController.verifyEmail);
- 
+
 // post
 router.post('/registers', userController.register); // done
-router.post('/reset-password', userController.resetPassword);   
+router.post('/reset-password', userController.resetPassword);
 // put
 router.put('/:id/change-password', userController.changePassword); // done
 router.put('forgot-password-token', userController.resetPassword);
@@ -21,7 +21,7 @@ router.put('/:id', userController.updateUser); // done
 router.put('/:id/activate', authMiddleware, isAdmin, userController.unblockUser); // done
 router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser); // done
 // delete
-router.delete('/:id',isAdmin, userController.deleteUser);
+router.delete('/:id', isAdmin, userController.deleteUser);
 
 // customer
 

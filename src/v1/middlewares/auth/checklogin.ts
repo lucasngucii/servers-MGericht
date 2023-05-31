@@ -8,9 +8,9 @@ export const checkLogin = async (req: Request, res: Response, next: NextFunction
     try {
         const user = await getUserByRefreshToken(refreshToken);
         if (!user) {
-            throw new Error("You are not login");
+            next()
         }
-        next();
+        throw new Error("User is logged in");
     } catch (error) {
         res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
     }
