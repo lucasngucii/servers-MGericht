@@ -11,7 +11,11 @@ export type Address = {
    city: string;
    state: string;
 };
-
+export enum Role {
+   ADMIN = 'Admin',
+   CUSTOMER = 'Customer',
+   EMPLOYEE = 'Employee',
+}
 export interface user extends mongoose.Document {
    email: string;
    username: string;
@@ -20,7 +24,7 @@ export interface user extends mongoose.Document {
    last_name: string;
    phone: number;
    address: Address[];
-   role: boolean;
+   role: Role;
    cart: cart[];
    isBlocked: boolean;
    isVerified: boolean;
@@ -57,7 +61,12 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
          ],
          trim: true,
       },
-      role: { type: Boolean, trim: true, default: false },
+      role: {
+         type: String,
+         enum: Object.values(Role),
+         default: Role.CUSTOMER,
+         required: false,
+      },
       cart: {
          type: [
             {
