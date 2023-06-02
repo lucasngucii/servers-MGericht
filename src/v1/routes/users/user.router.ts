@@ -24,7 +24,13 @@ router.put('/:id/deactivate', authMiddleware, isAdmin, userController.blockUser)
 router.delete('/:id', isAdmin, userController.deleteUser);
 
 // customer
+//get
+//router.get('/customer', authMiddleware, isAdmin, userController.getAllCustomer);
+router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById);
 
-//router.get('/customer', userController.getCustomerById);
+//post
+
+//put
+// delete
 
 module.exports = router;

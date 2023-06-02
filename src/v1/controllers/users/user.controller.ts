@@ -103,7 +103,7 @@ export const updateUser = async (req: Request, res: Response) => {
    }
 };
 
-export const  handleRefreshToken = async (req: Request, res: Response) => {
+export const handleRefreshToken = async (req: Request, res: Response) => {
    try {
       const cookie = req.cookies;
       console.log(cookie);
@@ -148,4 +148,23 @@ export const unblockUser = async (req: Request, res: Response) => {
    }
 };
 
+// customer
+export const getAllCustomer = async (req: Request, res: Response) => {
+   try {
+      const customer = await userServices.getAllCustomer();
+      res.status(HTTP_SUCCESS).json(customer);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
 
+export const getCustomerById = async (req: Request, res: Response) => {
+   const { id } = req.params;
+   validateID(id);
+   try {
+      const customer = await userServices.getCustomerById(id);
+      res.status(HTTP_SUCCESS).json(customer);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};

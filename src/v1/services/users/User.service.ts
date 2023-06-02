@@ -237,3 +237,24 @@ export const verifyEmail = async (verificationToken: string) => {
       throw error;
    }
 };
+
+// customer
+export const getCustomerById = async (id: string) => {
+   try {
+      const customer = await userModel.findById(id);
+      return customer;
+   } catch (error) {
+      throw error;
+   }
+};
+
+
+export const getAllCustomer = async () => {
+   try {
+      const customer = await userModel.find({ role: "Customer" });
+      return customer;
+   } catch (error) {
+      throw error;
+   }
+};
+
