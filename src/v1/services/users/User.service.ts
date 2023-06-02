@@ -248,13 +248,27 @@ export const getCustomerById = async (id: string) => {
    }
 };
 
-
 export const getAllCustomer = async () => {
    try {
-      const customer = await userModel.find({ role: "Customer" });
+      const customer = await userModel.find({ role: 'Customer' });
       return customer;
    } catch (error) {
       throw error;
    }
 };
-
+export const createCustomer = async (user: DocumentDefinition<user>) => {
+   try {
+      const foundUser = await userModel.findOne({ username: user.username });
+      if (foundUser) {
+         throw new Error('Customer already exists');
+      }
+      const newUser = await userModel.create({
+         ...user,
+         role: 'Customer',
+      });
+      await newUser.save();
+      return newUser;
+   } catch (error) {
+      throw error;
+   }
+};

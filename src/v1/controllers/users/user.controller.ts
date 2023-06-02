@@ -168,3 +168,13 @@ export const getCustomerById = async (req: Request, res: Response) => {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
 };
+
+export const createCustomer = async (req: Request, res: Response) => {
+      
+   try {
+      const customer = await userServices.createCustomer(req.body);
+      res.status(HTTP_SUCCESS).json(customer);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};

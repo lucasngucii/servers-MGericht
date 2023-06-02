@@ -29,6 +29,7 @@ router.delete('/:id', isAdmin, userController.deleteUser);
 router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById);
 
 //post
+router.post('/customer', authMiddleware, isAdmin, userController.createCustomer);
 
 //put
 // delete
