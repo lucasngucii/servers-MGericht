@@ -257,13 +257,17 @@ export const getAllCustomer = async () => {
    }
 };
 export const createCustomer = async (user: DocumentDefinition<user>) => {
+   const bcrypt_salt = parseInt(process.env.BCRYPT_SALT as string);
    try {
       const foundUser = await userModel.findOne({ username: user.username });
       if (foundUser) {
          throw new Error('Customer already exists');
       }
+      // hasdpassword
+      const hashedPassword = bcrypt.hashSync(user.password, bcrypt_salt);
       const newUser = await userModel.create({
          ...user,
+         password: hashedPassword,
          role: 'Customer',
       });
       await newUser.save();
@@ -272,3 +276,13 @@ export const createCustomer = async (user: DocumentDefinition<user>) => {
       throw error;
    }
 };
+export const updateCustomer = async (id: string, user: DocumentDefinition<user>) => {
+   try {
+      const foundUser = await userModel.findByIdAndUpdate(id, { ...user }, { new: true });
+      !foundUser && new Error('User not found');
+      return foundUser;
+   } catch (error) {
+      throw error;
+   }
+};
+

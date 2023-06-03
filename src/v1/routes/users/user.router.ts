@@ -26,12 +26,13 @@ router.delete('/:id', isAdmin, userController.deleteUser);
 // customer
 //get
 //router.get('/customer', authMiddleware, isAdmin, userController.getAllCustomer);
-router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById);
-
+router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById);// done
 //post
-router.post('/customer', authMiddleware, isAdmin, userController.createCustomer);
-
+router.post('/customer', authMiddleware, isAdmin, userController.createCustomer);// done
 //put
+router.put('/customer/:id', authMiddleware, isAdmin, userController.updateCustomer);// done
+/* router.put('/customer/change-password',  userController.changePasswordCustomer);// done */
 // delete
+router.delete('/customer/:id', authMiddleware, isAdmin, userController.deleteCustomer);// done
 
 module.exports = router;

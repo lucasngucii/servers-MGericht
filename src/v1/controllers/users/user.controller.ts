@@ -170,10 +170,42 @@ export const getCustomerById = async (req: Request, res: Response) => {
 };
 
 export const createCustomer = async (req: Request, res: Response) => {
-      
    try {
-      const customer = await userServices.createCustomer(req.body);
+      const customer = await userServices.register(req.body);
       res.status(HTTP_SUCCESS).json(customer);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
+
+export const updateCustomer = async (req: Request, res: Response) => {
+   const { id } = req.params;
+   validateID(id);
+   try {
+      const updateCustomer = await userServices.updateCustomer(id, req.body);
+      res.status(HTTP_SUCCESS).json(updateCustomer);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
+/* export const changePasswordCustomer = async (req: Request, res: Response) => {
+   const { id } = req.query;
+   validateID(id as string);
+   try {
+      console.log(id);
+      //      const changePassword = await userServices.changePasswordCustomer(id, req.body);
+   } catch (error) {
+      res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
+   }
+};
+ */
+
+export const deleteCustomer = async (req: Request, res: Response) => {
+   const { id } = req.params;
+   validateID(id);
+   try {
+      const deleteCustomer = await userServices.deleteUser(id);
+      res.status(HTTP_SUCCESS).json(deleteCustomer);
    } catch (error) {
       res.status(HTTP_INTERNAL_SERVER_ERROR).json({ error: getErrorMessage(error) });
    }
