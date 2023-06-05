@@ -1,10 +1,13 @@
 import { DocumentDefinition, Types } from 'mongoose';
-import { user, userModel } from '../../models/users/user.model';
 import bcrypt from 'bcrypt';
+
+import { user, userModel } from '../../models/users/user.model';
 import { generateRefreshToken } from '../../middlewares/jwt/refreshToken';
 import nodemailer from 'nodemailer';
 import configs from '../../configs';
 import jwt from 'jsonwebtoken';
+const OtpGenerator = require('otp-generator');
+const { OTP } = require('./OTP.service');
 
 export const login = async (user: DocumentDefinition<user>) => {
    try {
@@ -44,6 +47,15 @@ export const register = async (user: DocumentDefinition<user>) => {
       const hashedPassword = bcrypt.hashSync(user.password, bcrypt_salt);
       // generate verification token
       const verificationToken = generateRefreshToken(user._id);
+      // send otp
+      const Otp = OtpGenerator.generate(6, {
+         upperCaseAlphabets: false,
+         specialChars: false,
+         lowerCaseAlphabets: false,
+         digits: true,
+      });
+      const send = await OTP(user.email, Otp);
+      console.log(send);
       // create new user
       const newUser = await userModel.create({
          ...user,
@@ -285,4 +297,3 @@ export const updateCustomer = async (id: string, user: DocumentDefinition<user>)
       throw error;
    }
 };
-

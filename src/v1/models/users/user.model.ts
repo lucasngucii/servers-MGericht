@@ -84,7 +84,12 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
       passwordResetToken: { type: String, default: '' },
       passwordResetExpires: { type: Date },
       isVerified: { type: Boolean, default: false },
-      verificationToken: { type: String, default: null, trim: true },
+      verificationToken: {
+         type: String,
+         default: null,
+         trim: true,
+         index: { expires: '1.5h' },
+      },
    },
    {
       timestamps: true,
