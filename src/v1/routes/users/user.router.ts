@@ -10,9 +10,9 @@ router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
 //router.get('/verify-email', userController.verifyEmail);
-router.post('/verify-otp', userController.verifyOTP);
 
 // post
+router.post('/verify-otp', userController.verifyOTP);
 router.post('/registers', userController.register); // done
 router.post('/reset-password', userController.resetPassword);
 router.post('/send-otp', userController.sendOTP);
@@ -28,13 +28,13 @@ router.delete('/:id', isAdmin, userController.deleteUser);
 // customer
 //get
 //router.get('/customer', authMiddleware, isAdmin, userController.getAllCustomer);
-router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById);// done
+router.get('/customer/:id', authMiddleware, isAdmin, userController.getCustomerById); // done
 //post
-router.post('/customer', authMiddleware, isAdmin, userController.createCustomer);// done
+router.post('/customer', authMiddleware, isAdmin, userController.createCustomer); // done
 //put
-router.put('/customer/:id', authMiddleware, isAdmin, userController.updateCustomer);// done
+router.put('/customer/:id', authMiddleware, isAdmin, userController.updateCustomer); // done
 /* router.put('/customer/change-password',  userController.changePasswordCustomer);// done */
 // delete
-router.delete('/customer/:id', authMiddleware, isAdmin, userController.deleteCustomer);// done
+router.delete('/customer/:id', authMiddleware, isAdmin, userController.deleteCustomer); // done
 
 module.exports = router;
