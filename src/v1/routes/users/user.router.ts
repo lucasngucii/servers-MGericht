@@ -10,7 +10,7 @@ router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
 //router.get('/verify-email', userController.verifyEmail);
-router.get('/verify-otp', userController.verifyOTP);
+router.post('/verify-otp', userController.verifyOTP);
 
 // post
 router.post('/registers', userController.register); // done

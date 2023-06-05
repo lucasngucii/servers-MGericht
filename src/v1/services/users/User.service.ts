@@ -5,8 +5,8 @@ import { user, userModel } from '../../models/users/user.model';
 import { generateRefreshToken } from '../../middlewares/jwt/refreshToken';
 import jwt from 'jsonwebtoken';
 import { OtpModel } from '../../models/users/otp.model';
-import { validOTP, hasdOTP } from '../../utils/validation/OTP';
-const OtpGenerator = require('otp-generator');
+import { validOTP, hasdOTP ,OTPGenerator} from '../../utils/validation/OTP';
+
 
 export const login = async (user: DocumentDefinition<user>) => {
    try {
@@ -47,12 +47,7 @@ export const register = async (user: DocumentDefinition<user>) => {
       // generate verification token
       const verificationToken = generateRefreshToken(user._id);
       // send otp
-      const Otp = OtpGenerator.generate(6, {
-         upperCaseAlphabets: false,
-         specialChars: false,
-         lowerCaseAlphabets: false,
-         digits: true,
-      });
+      const Otp = await OTPGenerator();
       console.log(Otp);
       const send = await hasdOTP(user.email, Otp);
       console.log(send);
@@ -70,18 +65,12 @@ export const register = async (user: DocumentDefinition<user>) => {
    }
 };
 export const sendOTP = async (email: string) => {
-   const salt = parseInt(process.env.BCRYPT_SALT as string);
    try {
       const foundEmail = await userModel.findOne({ email: email });
       if (!foundEmail) {
          throw new Error('Email not found');
       }
-      const Otp = OtpGenerator.generate(6, {
-         upperCaseAlphabets: false,
-         specialChars: false,
-         lowerCaseAlphabets: false,
-         digits: true,
-      });
+      const Otp = await OTPGenerator();
       console.log(Otp);
       // hasd otp
       const hasdOtp = await hasdOTP(email, Otp);
