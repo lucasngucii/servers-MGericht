@@ -1,5 +1,6 @@
 import helmet from "helmet";
 import { Request, Response, NextFunction } from "express";
+import { getErrorMessage } from "./utils/error/errorMessage";
 const morgan = require("morgan");
 const express = require("express");
 const cors = require("cors");
@@ -33,7 +34,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   res.status(error.status || 500).send({
     error: {
       status: error.status || 500,
-      message: error.message || "Internal Server Error",
+      message: getErrorMessage(error) || "Internal Server Error",
     },
   });
 });
