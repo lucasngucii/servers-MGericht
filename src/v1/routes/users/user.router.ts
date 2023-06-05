@@ -10,10 +10,12 @@ router.get('/', authMiddleware, userController.getUsers); //done
 router.get('/:id', authMiddleware, userController.getUserById); // done
 router.get('/refresh', userController.handleRefreshToken);
 //router.get('/verify-email', userController.verifyEmail);
+router.get('/verify-otp', userController.verifyOTP);
 
 // post
 router.post('/registers', userController.register); // done
 router.post('/reset-password', userController.resetPassword);
+router.post('/send-otp', userController.sendOTP);
 // put
 router.put('/:id/change-password', userController.changePassword); // done
 router.put('forgot-password-token', userController.resetPassword);

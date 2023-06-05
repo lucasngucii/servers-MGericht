@@ -10,7 +10,7 @@ export const OtpSchema: mongoose.Schema<OTP> = new mongoose.Schema(
    {
       email: { type: String, required: true, unique: true, lowercase: true, trim: true },
       otp: { type: String, required: true, trim: true },
-      time: { type: Date, default: Date.now(), index: { expires: 60 } },
+      time: { type: Date, default: Date.now(), index: { expires: 120 } },
    },
    {
       timestamps: true,

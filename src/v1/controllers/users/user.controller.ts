@@ -24,6 +24,28 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
    }
 };
 
+// send otp
+
+export const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
+   const { email, opt } = req.body;
+   try {
+      const verifyOTP = await userServices.verifyOTP(email, opt);
+      res.status(HTTP_SUCCESS).json(verifyOTP);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};
+export const sendOTP = async (req: Request, res: Response, next: NextFunction) => { 
+   const { email } = req.body;
+   try {
+      const sendOTP = await userServices.sendOTP(email);
+      res.status(HTTP_SUCCESS).json(sendOTP);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+}
 // register user client
 export const register = async (req: Request, res: Response, next: NextFunction) => {
    try {

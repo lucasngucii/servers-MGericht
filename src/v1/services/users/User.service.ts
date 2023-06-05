@@ -3,11 +3,10 @@ import bcrypt from 'bcrypt';
 
 import { user, userModel } from '../../models/users/user.model';
 import { generateRefreshToken } from '../../middlewares/jwt/refreshToken';
-import nodemailer from 'nodemailer';
-import configs from '../../configs';
 import jwt from 'jsonwebtoken';
+import { OtpModel } from '../../models/users/otp.model';
+import { validOTP, hasdOTP } from '../../utils/validation/OTP';
 const OtpGenerator = require('otp-generator');
-const { OTP } = require('./OTP.service');
 
 export const login = async (user: DocumentDefinition<user>) => {
    try {
@@ -54,7 +53,8 @@ export const register = async (user: DocumentDefinition<user>) => {
          lowerCaseAlphabets: false,
          digits: true,
       });
-      const send = await OTP(user.email, Otp);
+      console.log(Otp);
+      const send = await hasdOTP(user.email, Otp);
       console.log(send);
       // create new user
       const newUser = await userModel.create({
@@ -65,6 +65,56 @@ export const register = async (user: DocumentDefinition<user>) => {
 
       await newUser.save();
       return newUser;
+   } catch (error) {
+      throw error;
+   }
+};
+export const sendOTP = async (email: string) => {
+   const salt = parseInt(process.env.BCRYPT_SALT as string);
+   try {
+      const foundEmail = await userModel.findOne({ email: email });
+      if (!foundEmail) {
+         throw new Error('Email not found');
+      }
+      const Otp = OtpGenerator.generate(6, {
+         upperCaseAlphabets: false,
+         specialChars: false,
+         lowerCaseAlphabets: false,
+         digits: true,
+      });
+      console.log(Otp);
+      // hasd otp
+      const hasdOtp = await hasdOTP(email, Otp);
+      !hasdOtp && new Error('OTP not found');
+      return hasdOtp;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const verifyOTP = async (email: string, otp: string) => {
+   try {
+      // check if otp exists
+      const optHolder = await OtpModel.find({ email: email });
+      if (!optHolder) {
+         throw new Error('OTP not found');
+      }
+      // get last otp
+      const lastOTP = optHolder[optHolder.length - 1];
+      // call service check otp match
+      const isValid = await validOTP(otp, lastOTP.otp);
+      if (!isValid) {
+         throw new Error('OTP not valid');
+      }
+      // check if email match
+      if (isValid && email === lastOTP.email) {
+         // create user test
+         console.log('matching otp and email successfully');
+
+         // delete otp
+         await OtpModel.deleteMany({ email: email });
+         return 1;
+      }
    } catch (error) {
       throw error;
    }
