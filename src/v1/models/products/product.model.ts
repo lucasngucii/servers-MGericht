@@ -1,41 +1,43 @@
-import mongoose from "mongoose";
-import { user } from "../users/user.model";
+import mongoose from 'mongoose';
+import { user } from '../users/user.model';
 
-export interface rating extends mongoose.Document {
-  userId: user["_id"];
-  rate: number;
-  comment: string;
-}
-export const ratingSchema: mongoose.Schema<rating> = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  rate: { type: Number, default: 0 },
-  comment: { type: String, default: "" },
-});
+export type RatingTypes = {
+   userId: string;
+   rate: number;
+   comment: string;
+};
+export type Tags = {
+   name: string;
+   description: string;
+};
 export interface Product extends mongoose.Document {
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-  tags: mongoose.Schema.Types.ObjectId[];
-  ratings: rating[];
+   name: string;
+   price: number;
+   description: string;
+   image: string;
+   category: string;
+   //rating: RatingTypes[];
+   //tags: Tags[];
 }
 export const ProductSchema: mongoose.Schema<Product> = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    description: { type: String, required: true },
-    image: { type: String, required: true },
-    category: { type: String, required: true },
-    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "tag", required: true }],
-    ratings: [{ type: ratingSchema, default: { rate: 0, comment: "" } }],
-  },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-    collection: "products",
-  }
+   {
+      name: { type: String, required: true },
+      price: { type: Number, required: true, min: 0 },
+      description: { type: String, required: true },
+      image: { type: String, required: true },
+      category: { type: String, required: true },
+      //rating: [{ type: String }],
+      //tags: [{ type: String, required: true }],
+   },
+   {
+      timestamps: true,
+      toJSON: { virtuals: true },
+      toObject: { virtuals: true },
+      collection: 'products',
+   }
 );
 
-export const productModel: mongoose.Model<Product> = mongoose.model("Product", ProductSchema);
+export const productModel: mongoose.Model<Product> = mongoose.model(
+   'Product',
+   ProductSchema
+);
