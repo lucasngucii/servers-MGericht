@@ -3,6 +3,8 @@ import { DocumentDefinition, Types } from 'mongoose';
 import { Order, OrderModel } from '../../models/orders/order.model';
 import { OrderStatus } from '../../constants/order-status/order_status';
 import { PaymentOptions } from '../../constants/order-status/payment_options';
+import { userModel } from '../../models/users/user.model';
+import { productModel } from '../../models/products/product.model';
 
 export const createOrder = async (userId: string, order: DocumentDefinition<Order>) => {
    try {
@@ -31,7 +33,16 @@ export const getOrderById = async (id: string) => {
 };
 export const getOrderByUserId = async (id: string) => {
    try {
+      // check user
+      const foundUser = await userModel.findById(id);
+      if (!foundUser) {
+         throw new Error('User in userModel not found');
+      }
+      // check order
       const order = await OrderModel.find({ userId: id });
+      if (!order) {
+         throw new Error('Order in orderModel not found');
+      }
       return order;
    } catch (error) {
       throw error;
@@ -39,7 +50,15 @@ export const getOrderByUserId = async (id: string) => {
 };
 export const getOrderByProductId = async (id: string) => {
    try {
+      // check product model
+      const foundProduct = await productModel.findById(id);
+      if (!foundProduct) {
+         throw new Error('Product in productModel not found');
+      }
       const order = await OrderModel.find({ productId: id });
+      if (!order) {
+         throw new Error('Order in orderModel not found');
+      }
       return order;
    } catch (error) {
       throw error;
@@ -48,6 +67,11 @@ export const getOrderByProductId = async (id: string) => {
 
 export const updateProductsInOrder = async (id: string, product: string[]) => {
    try {
+      // check product model
+      const foundProduct = await productModel.findById(id);
+      if (!foundProduct) {
+         throw new Error('Product in productModel not found');
+      }
       const updateAllProductInOrder = await OrderModel.findByIdAndUpdate(
          id,
          {
@@ -111,6 +135,22 @@ export const deleteAllOrder = async () => {
    try {
       const deleteAllOrder = await OrderModel.deleteMany();
       return deleteAllOrder ? 1 : 0;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const countOrder = async (id: string) => {
+   try {
+      const countOrder = await OrderModel.countDocuments({ userId: id });
+      return countOrder;
+   } catch (error) {
+      throw error;
+   }
+};
+export const countProductInOrder = async (id: string) => {
+   try {
+      const countProductInOrder = await OrderModel.countDocuments({ userId: id });
    } catch (error) {
       throw error;
    }
