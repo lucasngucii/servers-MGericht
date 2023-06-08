@@ -10,15 +10,13 @@ routes.get('/product/:id', authMiddleware, orderController.getOrderByProductId);
 
 //post
 routes.post('/:id/create', authMiddleware, orderController.createOrder);
-
+//put
 routes.put('/product/:id', authMiddleware, orderController.updateProductsInOrder); // 80% fixing order
-routes.put('/address/:id', authMiddleware, orderController.updateAddress); 
-routes.put('/payment/:id', authMiddleware, orderController.updatePaymentMethod); 
+routes.put('/address/:id', authMiddleware, orderController.updateAddress);
+routes.put('/payment/:id', authMiddleware, orderController.updatePaymentMethod);
 routes.put('/status/:id', authMiddleware, orderController.updateStatusOrder);
-
-routes.delete('/:id', authMiddleware, orderController.deleteOrder); 
+//delete
+routes.delete('/:id', authMiddleware, orderController.deleteOrder);
 routes.delete('/delete/all', authMiddleware, orderController.deleteAllOrders);
-
-
 
 module.exports = routes;
