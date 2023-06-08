@@ -18,6 +18,7 @@ export const createOrder = async (userId: string, order: DocumentDefinition<Orde
 export const getAllOrders = async () => {
    try {
       const orders = await OrderModel.find();
+      if (!orders) throw new Error('Order not found');
       return orders;
    } catch (error) {
       throw error;
@@ -48,13 +49,15 @@ export const getOrderByUserId = async (id: string) => {
       throw error;
    }
 };
+
+// fix
 export const getOrderByProductId = async (id: string) => {
    try {
       // check product model
-      const foundProduct = await productModel.findById(id);
+      /* const foundProduct = await productModel.findById(id);
       if (!foundProduct) {
          throw new Error('Product in productModel not found');
-      }
+      } */
       const order = await OrderModel.find({ productId: id });
       if (!order) {
          throw new Error('Order in orderModel not found');

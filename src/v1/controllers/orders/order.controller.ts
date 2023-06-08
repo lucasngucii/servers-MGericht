@@ -31,7 +31,7 @@ export const getAllOrders = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const getOrderById = async (req: Request, res: Response, next: NextFunction) => {
-   const { id } = req.body;
+   const { id } = req.params;
    validateID(id);
    try {
       const foundOrder = await orderService.getOrderById(id);
