@@ -66,7 +66,7 @@ export const getOrderByProductId = async (req: Request, res: Response, next: Nex
 export const updateProductsInOrder = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.params;
    validateID(id);
-   const [product] = req.body;
+   const [product] = req.body.product;
    try {
       const order = await orderService.updateProductsInOrder(id, product);
       res.status(HTTP_SUCCESS).json(order);
@@ -125,7 +125,7 @@ export const deleteOrder = async (req: Request, res: Response, next: NextFunctio
       next(error);
    }
 };
-export const deleteAllOrder = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteAllOrders = async (req: Request, res: Response, next: NextFunction) => {
    try {
       const order = await orderService.deleteAllOrder();
       res.status(HTTP_SUCCESS).json(order);
@@ -134,5 +134,3 @@ export const deleteAllOrder = async (req: Request, res: Response, next: NextFunc
       next(error);
    }
 };
-
-

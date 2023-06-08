@@ -71,10 +71,10 @@ export const getOrderByProductId = async (id: string) => {
 export const updateProductsInOrder = async (id: string, product: string[]) => {
    try {
       // check product model
-      const foundProduct = await productModel.findById(id);
+     /*  const foundProduct = await productModel.findById(id);
       if (!foundProduct) {
          throw new Error('Product in productModel not found');
-      }
+      } */
       const updateAllProductInOrder = await OrderModel.findByIdAndUpdate(
          id,
          {
