@@ -130,8 +130,7 @@ export const deleteOrder = async (id: string) => {
    try {
       const deleteOrder = await OrderModel.findByIdAndDelete(id);
       return deleteOrder;
-   } catch (error) {
-      throw error;
+   } catch (error) {       throw error;
    }
 };
 export const deleteAllOrder = async () => {
