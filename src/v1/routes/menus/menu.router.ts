@@ -8,9 +8,10 @@ routes.get('/:id', authMiddleware, menuController.getMenuById); // done
 routes.get('/product/:id', authMiddleware, menuController.getMenuByProductId); //done
 
 //post
-routes.post('/create', authMiddleware, menuController.createMenu);
+routes.post('/ create', authMiddleware, menuController.createMenu);
 //put
 routes.put('/:id', authMiddleware, menuController.updateMenu);
+routes.put('/:id/updateproduct', authMiddleware, menuController.updateMenuProductInfo);
 routes.put('/:id/product', authMiddleware, menuController.addProductToMenu);
 routes.put('/:id/product/:productId', authMiddleware, menuController.updateProductInMenu);
 //delete

@@ -1,6 +1,7 @@
 import { DocumentDefinition, Types } from 'mongoose';
 
 import { Menu, menuModel, MenuItem } from '../../models/menus/menu.model';
+import { productModel } from '../../models/products/product.model';
 
 export const createMenu = async (menu: DocumentDefinition<Menu>) => {
    try {
@@ -79,7 +80,11 @@ export const addProductToMenu = async (menuId: string, productId: string) => {
    }
 };
 
-export const updateProductInMenu = async (menuId: string, productId: string,product: DocumentDefinition<MenuItem>) => {
+export const updateProductInMenu = async (
+   menuId: string,
+   productId: string,
+   product: DocumentDefinition<MenuItem>
+) => {
    try {
       const menu = await menuModel.findById(menuId);
       if (!menu) throw new Error('Menu not found');
@@ -92,6 +97,40 @@ export const updateProductInMenu = async (menuId: string, productId: string,prod
       });
       await menu.save();
       return menu;
+   } catch (error) {
+      throw error;
+   }
+};
+
+export const updateMenuProductInfo = async (menuId: string) => {
+   try {
+      const menu = await menuModel.findById(menuId).lean();
+      if (!menu) throw new Error('Menu not found');
+
+      const productIds = menu.productList.map((item) => item.productId);
+      // query for product
+      const products = await productModel.find({ _id: { $in: productIds } }, 'name image').lean();
+      // update product information in model menu
+
+      const updateProductList = menu.productList.map((item) => {
+         const product = products.find((p) => {
+            p._id.toString() === item.productId.toString();
+         });
+         if (product)
+            return {
+               ...item,
+               productName: product.name,
+               productImage: product.image,
+            };
+         return item;
+      });
+      // update model "menu" with info about product
+      const updatedMenu = await menuModel.findByIdAndUpdate(
+         menuId,
+         { productList: [updateProductList] },
+         { new: true }
+      );
+      return updatedMenu;
    } catch (error) {
       throw error;
    }

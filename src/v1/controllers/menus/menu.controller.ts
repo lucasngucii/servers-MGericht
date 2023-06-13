@@ -18,6 +18,17 @@ export const createMenu = async (req: Request, res: Response, next: NextFunction
       next(error);
    }
 };
+export const updateMenuProductInfo = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.params;
+   validateID(id);
+   try {
+      const menu = await menuService.updateMenuProductInfo(id);
+      res.status(HTTP_SUCCESS).json(menu);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};
 
 export const getAllMenus = async (req: Request, res: Response, next: NextFunction) => {
    try {
@@ -100,10 +111,10 @@ export const addProductToMenu = async (req: Request, res: Response, next: NextFu
 };
 export const updateProductInMenu = async (req: Request, res: Response, next: NextFunction) => {
    const { id, productId } = req.params;
-    validateID(id);
-    validateID(productId);
+   validateID(id);
+   validateID(productId);
    try {
-      const menu = await menuService.updateProductInMenu(id, req.body);
+      const menu = await menuService.updateProductInMenu(id, productId, req.body);
       res.status(HTTP_SUCCESS).json(menu);
    } catch (error) {
       console.error(error);
