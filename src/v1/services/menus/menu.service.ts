@@ -5,6 +5,11 @@ import { productModel } from '../../models/products/product.model';
 
 export const createMenu = async (menu: DocumentDefinition<Menu>) => {
    try {
+      // check menu for existing
+      const foundMenu = await menuModel.findOne({ name: menu.name });
+      if (foundMenu) {
+         throw new Error(`Menu ${menu.name} already exists`);
+      }
       const createMenu = await menuModel.create(menu);
       await createMenu.save();
       return createMenu;
