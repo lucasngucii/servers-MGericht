@@ -23,9 +23,9 @@ export const updateMenuProductInfo = async (req: Request, res: Response, next: N
    validateID(id);
    try {
       const menu = await menuService.updateMenuProductInfo(id);
-      res.status(HTTP_SUCCESS).json(menu);
+      res.status(HTTP_SUCCESS).json (menu);
    } catch (error) {
-      console.error(error);
+      console.error(error); 
       next(error);
    }
 };
