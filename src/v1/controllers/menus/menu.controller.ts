@@ -1,12 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-   HTTP_INTERNAL_SERVER_ERROR,
-   HTTP_SUCCESS,
-   HTTP_FORBIDDEN,
-} from '../../constants/http-status/http_status';
-import { getErrorMessage } from '../../utils/error/errorMessage';
+import { HTTP_SUCCESS } from '../../constants/http-status/http_status';
 import { validateID } from '../../utils/validation/validateID';
-import { generateToken } from '../../middlewares/jwt/jwtToken';
 import * as menuService from '../../services/menus/menu.service';
 
 export const createMenu = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,9 +17,9 @@ export const updateMenuProductInfo = async (req: Request, res: Response, next: N
    validateID(id);
    try {
       const menu = await menuService.updateMenuProductInfo(id);
-      res.status(HTTP_SUCCESS).json (menu);
+      res.status(HTTP_SUCCESS).json(menu);
    } catch (error) {
-      console.error(error); 
+      console.error(error);
       next(error);
    }
 };

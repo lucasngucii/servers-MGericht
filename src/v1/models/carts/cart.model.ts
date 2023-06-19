@@ -7,12 +7,12 @@ export interface CartItem {
    total: number;
 }
 
-export interface Cart extends mongoose.Document {
+export interface cart extends mongoose.Document {
    user_Id: ObjectId;
    productList: CartItem[];
 }
 
-export const CartSchema: mongoose.Schema<Cart> = new mongoose.Schema(
+export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
    {
       user_Id: { type: mongoose.Types.ObjectId, ref: 'User' },
       productList: [
@@ -34,4 +34,4 @@ export const CartSchema: mongoose.Schema<Cart> = new mongoose.Schema(
 CartSchema.virtual('total').get(function () {
    return this.productList.reduce((total, item) => total + item.price * item.quantity, 0);
 });
-export const cartModel: mongoose.Model<Cart> = mongoose.model('Cart', CartSchema);
+export const cartModel: mongoose.Model<cart> = mongoose.model('Cart', CartSchema);

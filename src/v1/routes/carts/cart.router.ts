@@ -1,19 +1,19 @@
 import { Router } from 'express';
 const routes = Router();
 
-//import * as cartController from "../../controllers/carts/cart.controller";
+import * as cartController from '../../controllers/carts/cart.controller';
 import { authMiddleware } from '../../middlewares/auth/authMiddleware';
 
 //GET /products: Lấy danh sách các sản phẩm có sẵn trong cửa hàng.
-routes.get('/products', authMiddleware);
+routes.get('/:id/products', authMiddleware);
 //GET /products/{id}: Lấy thông tin chi tiết về một sản phẩm cụ thể dựa trên ID.
-routes.get('/products/:id', authMiddleware);
+routes.get('/:id/products/:id', authMiddleware);
 //GET /cart/items: Lấy thông tin chi tiết về các sản phẩm trong giỏ hàng.
-routes.get('/cart/items', authMiddleware);
+routes.get('/:id/cart/items', authMiddleware);
 //GET /orders: Lấy danh sách các đơn hàng đã được đặt.
-routes.get('/orders', authMiddleware);
+routes.get('/:id/orders', authMiddleware);
 //GET /orders/{id}: Lấy thông tin chi tiết về một đơn hàng cụ thể dựa trên ID.
-routes.get('/orders/:id', authMiddleware);
+routes.get('/:id/orders/:id', authMiddleware);
 //GET /users/{id}/orders: Lấy danh sách các đơn hàng đã được đặt bởi một người dùng cụ thể dựa trên ID người dùng.
 routes.get('/users/:id/orders', authMiddleware);
 //GET /users/{id}: Lấy thông tin chi tiết về một người dùng cụ thể dựa trên ID.
@@ -27,18 +27,18 @@ routes.get('/users/:id/wishlist', authMiddleware);
 //GET /cart/total: Lấy tổng giá trị của giỏ hàng, bao gồm cả các khoản giảm giá.
 routes.get('/cart/total', authMiddleware);
 
+//POST /: Tạo một giỏ hàng tương ứng người dùng mới.
+routes.post('/:id/create', authMiddleware, cartController.createCart);
 //POST /cart/items: Thêm một sản phẩm vào giỏ hàng.
-routes.post('/cart/items', authMiddleware);
+routes.post('/:id/cart/items', authMiddleware);
 //POST /cart/checkout: Xử lý thanh toán cho giỏ hàng và tạo đơn hàng.
-routes.post('/cart/checkout', authMiddleware);
-//POST /users: Tạo một người dùng mới trong hệ thống.
-routes.post('/users', authMiddleware);
+routes.post('/:id/cart/checkout', authMiddleware);
 //POST /cart/coupon: Áp dụng mã giảm giá hoặc phiếu quà tặng cho giỏ hàng.
-routes.post('/cart/coupon', authMiddleware);
+routes.post('/:id/cart/coupon', authMiddleware);
 //POST /cart/items/{id}/move-to-wishlist: Chuyển một sản phẩm từ giỏ hàng sang danh sách mong muốn.
-routes.post('/cart/items/:id/move-to-wishlist', authMiddleware);
+routes.post('/:id/cart/items/:id/move-to-wishlist', authMiddleware);
 //POST /cart/items/{id}/move-to-save-for-later: Chuyển một sản phẩm từ giỏ hàng sang danh sách lưu để dành sau này.
-routes.post('/cart/items/:id/move-to-save-for-later', authMiddleware);
+routes.post('/:id/cart/items/:id/move-to-save-for-later', authMiddleware);
 
 //PATCH /cart/items/{id}: Cập nhật số lượng của một sản phẩm trong giỏ hàng.
 routes.patch('/cart/items/:id', authMiddleware);
