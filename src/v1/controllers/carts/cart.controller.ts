@@ -20,7 +20,7 @@ export const addProductToCart = async (req: Request, res: Response, next: NextFu
        const cart = await cartService.addProductToCart(req.body);
        res.status(HTTP_SUCCESS).json(cart);
     } catch (error) {
-       console.error(error);
+       console.error(error);           
        next(error);
     }
  };
