@@ -10,6 +10,7 @@ export interface CartItem {
 export interface cart extends mongoose.Document {
    user_Id: ObjectId;
    productList: CartItem[];
+   totalAfterDiscount?: number;
 }
 
 export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
@@ -22,6 +23,7 @@ export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
             price: { type: Number },
          },
       ],
+      totalAfterDiscount: { type: Number },
    },
    {
       timestamps: true,
