@@ -10,7 +10,7 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       if (!foundUser) {
          throw new Error('User in userModel not found');
       }
-        // create cart
+      // create cart
       const createCart = await cartModel.create(cart);
       await createCart.save();
       return createCart;

@@ -3,7 +3,6 @@ import { HTTP_SUCCESS } from '../../constants/http-status/http_status';
 import { validateID } from '../../utils/validation/validateID';
 import * as cartService from '../../services/carts/cart.service';
 
-
 export const createCart = (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.params;
    validateID(id);
@@ -16,11 +15,11 @@ export const createCart = (req: Request, res: Response, next: NextFunction) => {
    }
 };
 export const addProductToCart = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-       const cart = await cartService.addProductToCart(req.body);
-       res.status(HTTP_SUCCESS).json(cart);
-    } catch (error) {
-       console.error(error);           
-       next(error);
-    }
- };
+   try {
+      const cart = await cartService.addProductToCart(req.body);
+      res.status(HTTP_SUCCESS).json(cart);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};

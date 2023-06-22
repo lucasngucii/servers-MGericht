@@ -9,6 +9,6 @@ routes.use('/api/users', userRouter);
 routes.use('/api/products', productRouter);
 routes.use('/api/orders', orderRouter);
 routes.use('/api/menus', menuRouter);
-routes.use('api/carts', cartRouter);
+routes.use('/api/carts', cartRouter);
 
 module.exports = routes;

@@ -4,7 +4,7 @@ export interface CartItem {
    productId: ObjectId;
    quantity: number;
    price: number;
-   total: number;
+   total?: number;
 }
 
 export interface cart extends mongoose.Document {
