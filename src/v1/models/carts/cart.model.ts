@@ -1,11 +1,11 @@
 import mongoose, { ObjectId } from 'mongoose';
 
-export interface CartItem {
+export type CartItem = {
    productId: ObjectId;
    quantity: number;
    price: number;
    total?: number;
-}
+};
 
 export interface cart extends mongoose.Document {
    user_Id: ObjectId;
