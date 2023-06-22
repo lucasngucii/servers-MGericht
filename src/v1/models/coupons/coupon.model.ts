@@ -4,6 +4,7 @@ export interface Coupon {
    name: string;
    expiry: Date;
    discount: number;
+   description?: string;
 }
 
 export const couponSchema: Schema<Coupon> = new mongoose.Schema(
@@ -16,6 +17,7 @@ export const couponSchema: Schema<Coupon> = new mongoose.Schema(
       },
       expiry: { type: Date, required: true },
       discount: { type: Number, required: true },
+      description: { type: String, trim: true },
    },
    {
       timestamps: true,
