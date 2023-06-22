@@ -18,7 +18,7 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       throw error;
    }
 };
-export const addProductToCart = async (cart: DocumentDefinition<cart>) => {
+/* export const addProductToCart = async (cart: DocumentDefinition<cart>) => {
    try {
       const createCart = await cartModel.create(cart);
       await createCart.save();
@@ -26,4 +26,9 @@ export const addProductToCart = async (cart: DocumentDefinition<cart>) => {
    } catch (error) {
       throw error;
    }
-};
+}; */
+
+export const getCartItems = async (id: string) => { 
+   
+}
+

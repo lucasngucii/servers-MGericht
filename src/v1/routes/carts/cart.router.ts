@@ -4,12 +4,9 @@ const routes = Router();
 import * as cartController from '../../controllers/carts/cart.controller';
 import { authMiddleware } from '../../middlewares/auth/authMiddleware';
 
-//GET /products: Lấy danh sách các sản phẩm có sẵn trong cửa hàng.
-routes.get('/:id/products', authMiddleware);
-//GET /products/{id}: Lấy thông tin chi tiết về một sản phẩm cụ thể dựa trên ID.
-routes.get('/:id/products/:id', authMiddleware);
+
 //GET /cart/items: Lấy thông tin chi tiết về các sản phẩm trong giỏ hàng.
-routes.get('/:id/cart/items', authMiddleware);
+routes.get('/:id/cart/items', authMiddleware, cartController.getCartItems);
 //GET /orders: Lấy danh sách các đơn hàng đã được đặt.
 routes.get('/:id/orders', authMiddleware);
 //GET /orders/{id}: Lấy thông tin chi tiết về một đơn hàng cụ thể dựa trên ID.
