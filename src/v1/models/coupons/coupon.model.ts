@@ -1,6 +1,7 @@
-import mongoose, { Schema, Model } from 'mongoose';
+import mongoose, { Schema, Model, ObjectId } from 'mongoose';
 
 export interface Coupon {
+   userId: ObjectId;
    name: string;
    expiry: Date;
    discount: number;
@@ -9,6 +10,7 @@ export interface Coupon {
 
 export const couponSchema: Schema<Coupon> = new mongoose.Schema(
    {
+      userId: { type: mongoose.Types.ObjectId, ref: 'User' },
       name: {
          type: String,
          trim: true,
