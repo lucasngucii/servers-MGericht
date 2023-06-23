@@ -38,25 +38,26 @@ export const getCouponById = async (req: Request, res: Response, next: NextFunct
    }
 };
 export const validateCoupon = async (req: Request, res: Response, next: NextFunction) => {
-   const { couponId } = req.params;
-   validateID(couponId);
+   const { id } = req.params;
+   validateID(id);
    try {
-      const coupon = await couponService.validateCoupon(couponId);
-      res.status(HTTP_SUCCESS).json(coupon);
+      const coupon = await couponService.validateCoupon(id);
+      res.status(HTTP_SUCCESS).json(coupon?.validateCouponStatus);
+      next();
    } catch (error) {
       console.log(error);
       next(error);
    }
 };
 export const updateCoupon = async (req: Request, res: Response, next: NextFunction) => {
-   const { userId } = req.user;
-   validateID(userId);
-
+   const { id } = req.user;
+   validateID(id);
+   console.log("user",id);
    const { couponId } = req.params;
+
    validateID(couponId);
    try {
-      const coupon = await couponService.updateCoupon(userId, couponId, req.body);
-      next(coupon);
+      const coupon = await couponService.updateCoupon(id, couponId, req.body);
       res.status(HTTP_SUCCESS).json(coupon);
    } catch (error) {
       console.log(error);
@@ -68,6 +69,7 @@ export const deleteCoupon = async (req: Request, res: Response, next: NextFuncti
    validateID(couponId);
    try {
       const coupon = await couponService.deleteCoupon(couponId);
+      res.status(HTTP_SUCCESS).json(coupon);
    } catch (error) {
       console.log(error);
       next(error);

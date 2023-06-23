@@ -43,7 +43,7 @@ export const getCouponById = async (id: string) => {
 };
 export const validateCoupon = async (couponId: string) => {
    try {
-      const coupon = await couponModel.findById(couponId).lean().select('validateCouponStatus');
+      const coupon = await couponModel.findById(couponId).select('validateCouponStatus').lean();
       if (!coupon) {
          throw new Error('Invalid coupon');
       }
