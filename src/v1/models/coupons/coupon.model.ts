@@ -6,6 +6,7 @@ export interface Coupon {
    expiry: Date;
    discount: number;
    description?: string;
+   validateCouponStatus?: boolean;
 }
 
 export const couponSchema: Schema<Coupon> = new mongoose.Schema(
@@ -17,9 +18,10 @@ export const couponSchema: Schema<Coupon> = new mongoose.Schema(
          unique: true,
          uppercase: true,
       },
-      expiry: { type: Date, required: true },
+      expiry: { type: Date, required: true, default: Date.now() },
       discount: { type: Number, required: true },
       description: { type: String, trim: true },
+      validateCouponStatus: { type: Boolean, required: true, default: false },
    },
    {
       timestamps: true,
