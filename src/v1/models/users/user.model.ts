@@ -1,8 +1,5 @@
-import mongoose,{ObjectId} from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 
-export type cart = {
-   cartId: Object
-};
 export type Address = {
    lna: string;
    lng: string;
@@ -24,7 +21,7 @@ export interface user extends mongoose.Document {
    phone: number;
    address: Address[];
    role: Role;
-   cart: cart[];
+   cart: ObjectId;
    isBlocked: boolean;
    isVerified: boolean;
    passwordChangedAt: Date;
@@ -67,17 +64,8 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
          required: false,
       },
       cart: {
-         type: [
-            {
-               productId: {
-                  type: mongoose.Schema.Types.ObjectId,
-                  ref: 'Cart',
-                  required: true,
-               },
-               quantity: { type: Number, required: true },
-            },
-         ],
-         default: [],
+         type: mongoose.Types.ObjectId,
+         ref: 'Cart',
       },
       passwordChangedAt: { type: Date, default: Date.now },
       passwordResetToken: { type: String, default: '' },
