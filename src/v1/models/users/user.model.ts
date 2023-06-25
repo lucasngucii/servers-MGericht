@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose,{ObjectId} from 'mongoose';
 
 export type cart = {
-   productId: string;
-   quantity: number;
+   cartId: Object
 };
 export type Address = {
    lna: string;
