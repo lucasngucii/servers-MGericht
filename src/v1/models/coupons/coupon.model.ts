@@ -2,7 +2,7 @@ import mongoose, { Schema, Model, ObjectId } from 'mongoose';
 
 export interface Coupon {
    userId: ObjectId;
-   name: string;
+   code: string;
    expiry: Date;
    discount: number;
    description?: string;
@@ -12,7 +12,7 @@ export interface Coupon {
 export const couponSchema: Schema<Coupon> = new mongoose.Schema(
    {
       userId: { type: mongoose.Types.ObjectId, ref: 'User' },
-      name: {
+      code: {
          type: String,
          trim: true,
          unique: true,
