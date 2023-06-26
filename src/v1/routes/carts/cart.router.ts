@@ -8,7 +8,7 @@ import { authMiddleware } from '../../middlewares/auth/authMiddleware';
 //GET /cart/items: Lấy thông tin chi tiết về các sản phẩm trong giỏ hàng.
 routes.get('/:id/cart/items', authMiddleware, cartController.getCartItems);
 //GET /cart/items/count: Lấy số lượng sản phẩm hiện có trong giỏ hàng.
-routes.get('/cart/items/count', authMiddleware);
+routes.get('/cart/items/count', authMiddleware, cartController.getCountInCart);
 //GET /cart/items/{id}: Lấy thông tin chi tiết về một sản phẩm trong giỏ hàng dựa trên ID.
 routes.get('/cart/items/:id', authMiddleware);
 //GET /users/{id}/wishlist: Lấy danh sách sản phẩm trong danh sách mong muốn của một người dùng.

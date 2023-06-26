@@ -2,6 +2,7 @@ import { DocumentDefinition, Types } from 'mongoose';
 
 import { cart, cartModel } from '../../models/carts/cart.model';
 import { userModel } from '../../models/users/user.model';
+import { getErrorMessage } from '../../utils/error/errorMessage';
 
 export const createCart = async (id: string, cart: DocumentDefinition<cart>) => {
    try {
@@ -16,12 +17,30 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       await createCart.save();
       return createCart;
    } catch (error) {
-      throw error;
+      getErrorMessage(error);
    }
 };
 
+export const getCartItems = async (id: string) => {
+   try {
+      const cart = await cartModel.findById(id);
+      if (!cart) {
+         throw new Error('Cart not found');
+      }
+      return cart.productList;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+};
 
-export const getCartItems = async (id: string) => { 
-   
-}
-
+export const getCountInCart = async (id: string) => {
+   try {
+      const cart = await cartModel.findById(id);
+      if (!cart) {
+         throw new Error('Cart not found');
+      }
+      return cart.productList.length;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+};
