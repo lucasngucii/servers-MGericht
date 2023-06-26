@@ -7,14 +7,6 @@ import { authMiddleware } from '../../middlewares/auth/authMiddleware';
 
 //GET /cart/items: Lấy thông tin chi tiết về các sản phẩm trong giỏ hàng.
 routes.get('/:id/cart/items', authMiddleware, cartController.getCartItems);
-//GET /orders: Lấy danh sách các đơn hàng đã được đặt.
-routes.get('/:id/orders', authMiddleware);
-//GET /orders/{id}: Lấy thông tin chi tiết về một đơn hàng cụ thể dựa trên ID.
-routes.get('/:id/orders/:id', authMiddleware);
-//GET /users/{id}/orders: Lấy danh sách các đơn hàng đã được đặt bởi một người dùng cụ thể dựa trên ID người dùng.
-routes.get('/users/:id/orders', authMiddleware);
-//GET /users/{id}: Lấy thông tin chi tiết về một người dùng cụ thể dựa trên ID.
-routes.get('/users/:id', authMiddleware);
 //GET /cart/items/count: Lấy số lượng sản phẩm hiện có trong giỏ hàng.
 routes.get('/cart/items/count', authMiddleware);
 //GET /cart/items/{id}: Lấy thông tin chi tiết về một sản phẩm trong giỏ hàng dựa trên ID.
@@ -39,8 +31,6 @@ routes.post('/:id/cart/items/:id/move-to-save-for-later', authMiddleware);
 
 //PATCH /cart/items/{id}: Cập nhật số lượng của một sản phẩm trong giỏ hàng.
 routes.patch('/cart/items/:id', authMiddleware);
-//PATCH /users/{id}: Cập nhật thông tin của một người dùng cụ thể dựa trên ID.
-routes.patch('/users/:id', authMiddleware);
 //PATCH /cart/items/{id}/quantity: Cập nhật số lượng của một sản phẩm trong giỏ hàng dựa trên ID
 routes.patch('/cart/items/:id/quantity', authMiddleware);
 //DELETE /cart/items/{id}: Xóa một sản phẩm khỏi giỏ hàng.

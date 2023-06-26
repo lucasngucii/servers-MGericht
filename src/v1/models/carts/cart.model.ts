@@ -49,4 +49,5 @@ CartSchema.virtual('total').get(function () {
 });
 
 
+
 export const cartModel: mongoose.Model<cart> = mongoose.model('Cart', CartSchema);

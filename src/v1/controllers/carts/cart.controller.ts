@@ -14,15 +14,6 @@ export const createCart = (req: Request, res: Response, next: NextFunction) => {
       next(error);
    }
 };
-/* export const addProductToCart = async (req: Request, res: Response, next: NextFunction) => {
-   try {
-      const cart = await cartService.addProductToCart(req.body);
-      res.status(HTTP_SUCCESS).json(cart);
-   } catch (error) {
-      console.error(error);
-      next(error);
-   }
-}; */
 
 export const getCartItems = async (req: Request, res: Response, next: NextFunction) => { 
    const { id } = req.user;
