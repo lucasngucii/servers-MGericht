@@ -66,6 +66,7 @@ export const userSchema: mongoose.Schema<user> = new mongoose.Schema(
       cart: {
          type: mongoose.Types.ObjectId,
          ref: 'Cart',
+         default: null,
       },
       passwordChangedAt: { type: Date, default: Date.now },
       passwordResetToken: { type: String, default: '' },

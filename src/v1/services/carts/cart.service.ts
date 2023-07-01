@@ -14,6 +14,12 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       // create cart
       const createCart = await cartModel.create({...cart, user: id});
       await createCart.save();
+      // update user
+      foundUser.cart = createCart._id;
+      await foundUser.save();
+
+      console.log(foundUser.cart);
+
       return createCart;
    } catch (error) {
       getErrorMessage(error);

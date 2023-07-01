@@ -4,7 +4,7 @@ import { validateID } from '../../utils/validation/validateID';
 import * as cartService from '../../services/carts/cart.service';
 
 export const createCart = async (req: Request, res: Response, next: NextFunction) => {
-   const { id } = req.params;
+   const { id } = req.user;
    validateID(id);
    try {
       const cart = await cartService.createCart(id, req.body);
