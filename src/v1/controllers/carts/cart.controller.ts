@@ -86,3 +86,14 @@ export const addProductToCart = async (req: Request, res: Response, next: NextFu
       next(error);
    }
 };
+export const updateProductInCart = async (req: Request, res: Response, next: NextFunction) => {
+   const {id} = req.user;
+   validateID(id);
+   console.log(id);
+   try {
+      
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+}
