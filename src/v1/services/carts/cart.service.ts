@@ -144,6 +144,8 @@ export const addProductToCart = async (
       const product = cart.productList.find((item) => item.productId.toString() === productId);
       if (product) {
          product.quantity += quantity;
+         await cart.save();
+         return cart;
       }
       const newProduct = { productId: productId, quantity: quantity, price: price };
       // add product to cart
