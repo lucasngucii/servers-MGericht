@@ -17,9 +17,6 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       // update user
       foundUser.cart = createCart._id;
       await foundUser.save();
-
-      console.log(foundUser.cart);
-
       return createCart;
    } catch (error) {
       getErrorMessage(error);
@@ -28,9 +25,13 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
 
 export const getCartItems = async (id: string) => {
    try {
-      const cart = await cartModel.findById(id);
+      const foundUser = await userModel.findById(id).populate('cart');
+      if (!foundUser) {
+         throw new Error('cart in userModel not found');
+      }
+      const cart = await cartModel.findById(foundUser.cart);
       if (!cart) {
-         throw new Error('Cart not found');
+         throw new Error('cart not found');
       }
       return cart.productList;
    } catch (error) {
@@ -44,6 +45,7 @@ export const getCountInCart = async (id: string) => {
       if (!cart) {
          throw new Error('Cart not found');
       }
+
       return cart.productList.length;
    } catch (error) {
       getErrorMessage(error);
