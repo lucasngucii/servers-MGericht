@@ -1,6 +1,6 @@
 import { DocumentDefinition, Types } from 'mongoose';
 
-import { cart, cartModel } from '../../models/carts/cart.model';
+import { cart, cartModel } from '../../models/carts/cart.model'; 
 import { userModel } from '../../models/users/user.model';
 import { getErrorMessage } from '../../utils/error/errorMessage';
 
@@ -11,9 +11,8 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       if (!foundUser) {
          throw new Error('User in userModel not found');
       }
-      console.log(foundUser);
       // create cart
-      const createCart = await cartModel.create(cart);
+      const createCart = await cartModel.create({...cart, user: id});
       await createCart.save();
       return createCart;
    } catch (error) {

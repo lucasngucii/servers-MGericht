@@ -3,11 +3,11 @@ import { HTTP_SUCCESS } from '../../constants/http-status/http_status';
 import { validateID } from '../../utils/validation/validateID';
 import * as cartService from '../../services/carts/cart.service';
 
-export const createCart = (req: Request, res: Response, next: NextFunction) => {
+export const createCart = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.params;
    validateID(id);
    try {
-      const cart = cartService.createCart(id, req.body);
+      const cart = await cartService.createCart(id, req.body);
       res.status(HTTP_SUCCESS).json(cart);
    } catch (error) {
       console.error(error);
@@ -43,7 +43,7 @@ export const getItemInCart = async (req: Request, res: Response, next: NextFunct
    const {id}= req.params
    validateID(id);
    try {
-      const cart = await cartService.getItemInCart(id);
+      //const cart = await cartService.getItemInCart(id);
    } catch (error) {
       console.error(error);
       next(error);
