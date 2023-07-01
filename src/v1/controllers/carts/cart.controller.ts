@@ -14,8 +14,8 @@ export const createCart = async (req: Request, res: Response, next: NextFunction
       next(error);
    }
 };
-// test
-export const getCartItems = async (req: Request, res: Response, next: NextFunction) => { 
+
+export const getCartItems = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.user;
    validateID(id);
    try {
@@ -25,10 +25,10 @@ export const getCartItems = async (req: Request, res: Response, next: NextFuncti
       console.error(error);
       next(error);
    }
-}
+};
 // test
 export const getCountInCart = async (req: Request, res: Response, next: NextFunction) => {
-   const {id} = req.params
+   const { id } = req.user;
    validateID(id);
    try {
       const countCart = await cartService.getCountInCart(id);
@@ -37,15 +37,52 @@ export const getCountInCart = async (req: Request, res: Response, next: NextFunc
       console.error(error);
       next(error);
    }
-}
-// test
-export const getItemInCart = async (req: Request, res: Response, next: NextFunction) => {
-   const {id}= req.params
+};
+export const getTotalInCart = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
    validateID(id);
    try {
-      //const cart = await cartService.getItemInCart(id);
+      const countCart = await cartService.getTotalInCart(id);
+      res.status(HTTP_SUCCESS).json(countCart);
    } catch (error) {
       console.error(error);
       next(error);
    }
-}
+};
+
+export const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
+   validateID(id);
+   try {
+      const cart = await cartService.getWishlist(id);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};
+
+export const getProductById = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
+   validateID(id);
+   const { productId } = req.params;
+   try {
+      const cart = await cartService.getProductInCart(id, productId);
+      res.status(HTTP_SUCCESS).json(cart);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};
+
+export const addProductToCart = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
+   validateID(id);
+   const {productId, quantity, price} = req.body;
+   try {
+      const cart = await cartService.addProductToCart(id, productId, quantity, price);
+      res.status(HTTP_SUCCESS).json(cart);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};

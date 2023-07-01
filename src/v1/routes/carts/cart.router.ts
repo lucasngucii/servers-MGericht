@@ -10,18 +10,18 @@ routes.get('/items', authMiddleware, cartController.getCartItems);
 //GET /cart/items/count: Lấy số lượng sản phẩm hiện có trong giỏ hàng.
 routes.get('/items/count', authMiddleware, cartController.getCountInCart);
 //GET /cart/items/{id}: Lấy thông tin chi tiết về một sản phẩm trong giỏ hàng dựa trên ID.
-routes.get('/items/:id', authMiddleware);
+routes.get('/items/:productId', authMiddleware, cartController.getProductById);
 //GET /users/{id}/wishlist: Lấy danh sách sản phẩm trong danh sách mong muốn của một người dùng.
-routes.get('/users/:id/wishlist', authMiddleware);
+routes.get('/users/:id/wishlist', authMiddleware, cartController.getWishlist);
 //GET /cart/total: Lấy tổng giá trị của giỏ hàng, bao gồm cả các khoản giảm giá.
-routes.get('/cart/total', authMiddleware);
+routes.get('/total', authMiddleware, cartController.getTotalInCart);
 
 //POST /: Tạo một giỏ hàng tương ứng người dùng mới.
 routes.post('/create', authMiddleware, cartController.createCart);
 //POST /cart/items: Thêm một sản phẩm vào giỏ hàng.
-routes.post('/:id/cart/items', authMiddleware);
+routes.post('/items', authMiddleware, cartController.addProductToCart);
 //POST /cart/checkout: Xử lý thanh toán cho giỏ hàng và tạo đơn hàng.
-routes.post('/:id/cart/checkout', authMiddleware);
+routes.post('/:id/cart/checkout', authMiddleware, );
 //POST /cart/coupon: Áp dụng mã giảm giá hoặc phiếu quà tặng cho giỏ hàng.
 routes.post('/:id/cart/coupon', authMiddleware);
 //POST /cart/items/{id}/move-to-wishlist: Chuyển một sản phẩm từ giỏ hàng sang danh sách mong muốn.

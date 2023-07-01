@@ -1,7 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose';
 
 export type CartItem = {
-   productId: ObjectId;
+   productId: string;
    quantity: number;
    price: number;
    total?: number;
@@ -47,7 +47,5 @@ export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
 CartSchema.virtual('total').get(function () {
    return this.productList.reduce((total, item) => total + item.price * item.quantity, 0);
 });
-
-
 
 export const cartModel: mongoose.Model<cart> = mongoose.model('Cart', CartSchema);
