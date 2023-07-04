@@ -77,7 +77,7 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
 export const addProductToCart = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.user;
    validateID(id);
-   const {productId, quantity, price} = req.body;
+   const { productId, quantity, price } = req.body;
    try {
       const cart = await cartService.addProductToCart(id, productId, quantity, price);
       res.status(HTTP_SUCCESS).json(cart);
@@ -87,13 +87,36 @@ export const addProductToCart = async (req: Request, res: Response, next: NextFu
    }
 };
 export const updateProductInCart = async (req: Request, res: Response, next: NextFunction) => {
-   const {id} = req.user;
+   const { id } = req.user;
    validateID(id);
    console.log(id);
    try {
-      
    } catch (error) {
       console.error(error);
       next(error);
    }
-}
+};
+
+export const checkOut = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
+   validateID(id);
+   try {
+      const checkout = await cartService.checkOut(id);
+      res.status(HTTP_SUCCESS).json(checkout);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};
+export const addCouponToCart = async (req: Request, res: Response, next: NextFunction) => {
+   const { id } = req.user;
+   validateID(id);
+   const { code } = req.body;
+   try {
+      const addCoupon = await cartService.addCouponToCart(id, code);
+      res.status(HTTP_SUCCESS).json(addCoupon);
+   } catch (error) {
+      console.error(error);
+      next(error);
+   }
+};

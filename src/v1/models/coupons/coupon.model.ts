@@ -21,7 +21,7 @@ export const couponSchema: Schema<Coupon> = new mongoose.Schema(
       expiry: { type: Date, required: true, default: Date.now() },
       discount: { type: Number, required: true },
       description: { type: String, trim: true },
-      validateCouponStatus: { type: Boolean, required: true, default: false },
+      validateCouponStatus: { type: Boolean, default: false },
    },
    {
       timestamps: true,

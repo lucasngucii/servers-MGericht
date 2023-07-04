@@ -4,6 +4,7 @@ import { cart, cartModel } from '../../models/carts/cart.model';
 import { userModel } from '../../models/users/user.model';
 import { getErrorMessage } from '../../utils/error/errorMessage';
 import { validateID } from '../../utils/validation/validateID';
+import { couponModel } from '../../models/coupons/coupon.model';
 
 export const createCart = async (id: string, cart: DocumentDefinition<cart>) => {
    try {
@@ -156,3 +157,38 @@ export const addProductToCart = async (
       getErrorMessage(error);
    }
 };
+export const addCouponToCart = async (id: string, code: string) => {
+   try {
+      const foundUser = await userModel.findById(id).populate('cart');
+      if (!foundUser) {
+         throw new Error('cart in userModel not found');
+      }
+      const cart = await cartModel.findById(foundUser.cart);
+      if (!cart) {
+         throw new Error('cart not found');
+      }
+      // check coupon in database
+      const coupon = await couponModel.findOne({ code: code }).lean();
+      if (!coupon) {
+         throw new Error('coupon not found');
+      }
+      // check if the coupon has expired
+      if (coupon.expiry < new Date()) {
+         throw new Error('coupon has expired');
+      }
+      // check if the coupon has been used
+      if (coupon.validateCouponStatus === true ) {
+         throw new Error('coupon has been used');
+      }
+      // add coupon
+      cart.discount?.push({ code: coupon.code });
+      await cart.save();
+      // update the coupon
+      coupon.validateCouponStatus = true;
+      //await coupon.save();
+      return cart;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+};
+export const checkOut = async (id: string) => {};

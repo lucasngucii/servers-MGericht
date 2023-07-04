@@ -7,7 +7,6 @@ export type CartItem = {
    total?: number;
 };
 export type discount = {
-   couponId: ObjectId;
    code: string;
 };
 
@@ -20,7 +19,7 @@ export interface cart extends mongoose.Document {
 
 export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
    {
-      user_Id: { type: mongoose.Types.ObjectId, ref: 'User' },
+      user_Id: { type:  mongoose.Types.ObjectId, ref: 'User' },
       productList: [
          {
             productId: { type: mongoose.Types.ObjectId, ref: 'Product' },
@@ -30,7 +29,7 @@ export const CartSchema: mongoose.Schema<cart> = new mongoose.Schema(
       ],
       discount: [
          {
-            couponId: { type: mongoose.Types.ObjectId, ref: 'Coupon' },
+            couponId: { type:  mongoose.Types.ObjectId, ref: 'Coupon' },
             code: { type: String, trim: true, unique: true, uppercase: true },
          },
       ],
