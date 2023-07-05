@@ -1,10 +1,9 @@
-import { DocumentDefinition, Types } from 'mongoose';
+import { DocumentDefinition, ObjectId, isValidObjectId } from 'mongoose';
 
 import { cart, cartModel } from '../../models/carts/cart.model';
 import { userModel } from '../../models/users/user.model';
 import { getErrorMessage } from '../../utils/error/errorMessage';
-import { validateID } from '../../utils/validation/validateID';
-import { couponModel } from '../../models/coupons/coupon.model';
+import { getCouponById, checkCoupon } from '../coupons/coupon.service';
 
 export const createCart = async (id: string, cart: DocumentDefinition<cart>) => {
    try {
@@ -24,18 +23,40 @@ export const createCart = async (id: string, cart: DocumentDefinition<cart>) => 
       getErrorMessage(error);
    }
 };
-
-export const getCartItems = async (id: string) => {
+export const foundUserCart = async (id: string) => {
    try {
       const foundUser = await userModel.findById(id).populate('cart');
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      return foundUser;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+};
+export const foundCartById = async (id: string) => {
+   try {
+      const cart = await cartModel.findById(id);
       if (!cart) {
          throw new Error('cart not found');
       }
-      return cart.productList;
+      return cart;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+};
+
+export const getCartItems = async (id: string) => {
+   try {
+      const foundUser = await foundUserCart(id);
+      if (foundUser) {
+         const cartId = foundUser.cart.toString();
+         const cart = await foundCartById(cartId);
+         if (!cart) {
+            throw new Error('cart not found');
+         }
+         return cart.productList;
+      }
    } catch (error) {
       getErrorMessage(error);
    }
@@ -43,11 +64,12 @@ export const getCartItems = async (id: string) => {
 
 export const getCountInCart = async (id: string) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
@@ -61,11 +83,12 @@ export const getCountInCart = async (id: string) => {
 
 export const getTotalInCart = async (id: string) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
@@ -93,11 +116,12 @@ export const getTotalInCart = async (id: string) => {
 };
 export const getWishlist = async (id: string) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
@@ -108,11 +132,12 @@ export const getWishlist = async (id: string) => {
 };
 export const getProductInCart = async (id: string, productId: string) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
@@ -133,11 +158,12 @@ export const addProductToCart = async (
    price: number
 ) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
@@ -152,40 +178,37 @@ export const addProductToCart = async (
       // add product to cart
       cart.productList.push({ ...newProduct });
       await cart.save();
+      console.log(cart)
       return cart;
    } catch (error) {
       getErrorMessage(error);
    }
 };
-export const addCouponToCart = async (id: string, code: string) => {
+export const addCouponToCart = async (id: string, couponId: string) => {
    try {
-      const foundUser = await userModel.findById(id).populate('cart');
+      const foundUser = await foundUserCart(id);
       if (!foundUser) {
          throw new Error('cart in userModel not found');
       }
-      const cart = await cartModel.findById(foundUser.cart);
+      const cartId = foundUser.cart.toString();
+      const cart = await foundCartById(cartId);
       if (!cart) {
          throw new Error('cart not found');
       }
       // check coupon in database
-      const coupon = await couponModel.findOne({ code: code }).lean();
-      if (!coupon) {
-         throw new Error('coupon not found');
+      const coupon = await checkCoupon(couponId);
+      if (coupon) {
+         // check coupon in cart
+         const foundCoupon = cart.discount?.find((item) => item.code.toString() === couponId);
+         if (foundCoupon) {
+            throw new Error('coupon already exists');
+         }
+         // add coupon to cart
+         cart.discount?.push({ ...coupon });
+         await cart.save();
+         // set coupon count to current
+         coupon.countUsings++;
       }
-      // check if the coupon has expired
-      if (coupon.expiry < new Date()) {
-         throw new Error('coupon has expired');
-      }
-      // check if the coupon has been used
-      if (coupon.validateCouponStatus === true ) {
-         throw new Error('coupon has been used');
-      }
-      // add coupon
-      cart.discount?.push({ code: coupon.code });
-      await cart.save();
-      // update the coupon
-      coupon.validateCouponStatus = true;
-      //await coupon.save();
       return cart;
    } catch (error) {
       getErrorMessage(error);

@@ -10,7 +10,7 @@ export const createCoupon = async (id: string, coupons: DocumentDefinition<Coupo
          throw new Error('User not found');
       }
       // check role create coupon
-      if (foundUser?.role !== 'Admin') {
+      if (foundUser.role !== 'Admin') {
          throw new Error('You are not authorized to create a coupon');
       }
       // create coupon
@@ -33,7 +33,7 @@ export const getCouponById = async (id: string) => {
    try {
       const coupon = await couponModel
          .findById(id)
-         .select('name expiry')
+         .select('code expiry')
          .sort({ createdAt: 1 })
          .lean();
       return coupon;
@@ -48,7 +48,7 @@ export const validateCoupon = async (couponId: string) => {
          throw new Error('Invalid coupon');
       }
       // check validateCouponStatus
-      if (coupon.validateCouponStatus != false) {
+      if (coupon.validateCouponStatus != true) {
          throw new Error('Coupon has been used');
       }
       return coupon;
@@ -80,3 +80,24 @@ export const deleteCoupon = async (couponId: string) => {
       getErrorMessage(error);
    }
 };
+
+export const checkCoupon = async (couponId: string) => {
+   try {
+      const foundCoupon = await getCouponById(couponId);
+      console.log(foundCoupon)
+      if (!foundCoupon) {
+         throw new Error('Coupon not found');
+      }
+      // check validateCouponStatus
+      if (foundCoupon.validateCouponStatus != false) {
+         throw new Error('Coupon has been used because it not valid');
+      }
+      // check count using of the coupon
+      if (foundCoupon.countUsings >= foundCoupon.countOrderMax ) {
+         throw new Error('Coupon has been used because it has');
+      }
+      return foundCoupon;
+   } catch (error) {
+      getErrorMessage(error);
+   }
+}

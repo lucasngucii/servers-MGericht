@@ -6,10 +6,8 @@ import * as couponService from '../../services/coupons/coupon.service';
 export const createCoupon = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.user;
    validateID(id);
-
    try {
       const coupon = await couponService.createCoupon(id, req.body);
-      console.log(coupon);
       res.status(HTTP_SUCCESS).json(coupon);
    } catch (error) {
       console.log(error);

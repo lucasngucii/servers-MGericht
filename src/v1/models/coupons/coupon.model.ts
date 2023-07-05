@@ -7,6 +7,8 @@ export interface Coupon {
    discount: number;
    description?: string;
    validateCouponStatus?: boolean;
+   countUsings: number;
+   countOrderMax: number;
 }
 
 export const couponSchema: Schema<Coupon> = new mongoose.Schema(
@@ -22,6 +24,8 @@ export const couponSchema: Schema<Coupon> = new mongoose.Schema(
       discount: { type: Number, required: true },
       description: { type: String, trim: true },
       validateCouponStatus: { type: Boolean, default: false },
+      countUsings: { type: Number, default: 0 },
+      countOrderMax: { type: Number, default: 0 },
    },
    {
       timestamps: true,

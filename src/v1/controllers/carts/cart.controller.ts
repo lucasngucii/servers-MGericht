@@ -111,9 +111,10 @@ export const checkOut = async (req: Request, res: Response, next: NextFunction) 
 export const addCouponToCart = async (req: Request, res: Response, next: NextFunction) => {
    const { id } = req.user;
    validateID(id);
-   const { code } = req.body;
+   const { couponId } = req.body;
+   validateID(couponId);  
    try {
-      const addCoupon = await cartService.addCouponToCart(id, code);
+      const addCoupon = await cartService.addCouponToCart(id, couponId);
       res.status(HTTP_SUCCESS).json(addCoupon);
    } catch (error) {
       console.error(error);
