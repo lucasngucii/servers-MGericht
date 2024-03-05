@@ -1,6 +1,9 @@
 import * as mongoose from 'mongoose';
-
-const connectString = `mongodb://localhost:27017/sleeprDEV`;
+import config from '../configs/db.config';
+const host = config.db.host || 'localhost';
+const port = config.db.port || 27017;
+const name = config.db.name || 'sleeprDEV';
+const connectString = `mongodb://${host}:${port}/${name}`;
 
 //using design pattern singletons
 class Database {
@@ -11,10 +14,10 @@ class Database {
    private _connect(type = 'mongodb'): Promise<void> {
       mongoose.set('debug', true);
       mongoose.set('debug', { color: true });
-
+      mongoose.set('strictQuery', false);
       return mongoose
          .connect(connectString, { maxPoolSize: 100 })
-         .then(() => console.log('Connected to MongoDB'))
+         .then(() => console.log('Connected to MongoDB', name))
          .catch(() => console.log(' connection failed'));
    }
    public static getInstance(): Database {
